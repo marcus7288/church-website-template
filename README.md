@@ -1,139 +1,181 @@
-# Faith Assembly of God - Website
+# Springfield Faith Assembly — Website
 
-A beautiful, single-page website for Faith Assembly of God in Springfield, Missouri.
+> **Live site:** [faithagspringfield.netlify.app](https://faithagspringfield.netlify.app)
+> **Admin panel:** [faithagspringfield.netlify.app/admin.html](https://faithagspringfield.netlify.app/admin.html)
 
-## Features
-
-- **Responsive Design**: Looks great on all devices (desktop, tablet, mobile)
-- **Elegant Aesthetics**: Warm, welcoming design with gold and deep blue color scheme
-- **Smooth Animations**: Subtle scroll effects and hover animations
-- **Service Times**: Clear display of worship service schedule
-- **Ministries Overview**: Showcase of church programs and activities
-- **Contact Information**: Easy-to-find location and contact details
-
-## Deploying to Netlify
-
-### Important: Logo File Included
-
-A placeholder logo (`logo.svg`) is included. You should replace it with your church's actual logo before deploying.
-
-- **Current file**: `logo.svg` (placeholder with cross design)
-- **Recommended**: Replace with your church's logo (PNG, SVG, or JPG)
-- **Recommended size**: 300x300px or larger (will scale automatically)
-- **Tip**: PNG or SVG with transparent background works best
-
-### Option 1: Drag and Drop (Easiest)
-
-1. Download the `index.html` file
-2. Go to [Netlify Drop](https://app.netlify.com/drop)
-3. Drag and drop the `index.html` file
-4. Your site will be live instantly with a Netlify URL!
-
-### Option 2: Git Deployment
-
-1. Create a new repository on GitHub
-2. Add the `index.html` file to your repository
-3. Go to [Netlify](https://app.netlify.com)
-4. Click "Add new site" → "Import an existing project"
-5. Connect to your GitHub repository
-6. Deploy!
-
-### Option 3: Netlify CLI
-
-```bash
-# Install Netlify CLI
-npm install -g netlify-cli
-
-# Navigate to your project folder
-cd your-project-folder
-
-# Deploy
-netlify deploy
-```
-
-## Customization Guide
-
-### Replace the Logo
-
-1. A placeholder logo (`logo.svg`) is included with a simple cross design
-2. Replace it with your church's actual logo
-3. Keep the same filename `logo.svg` OR update the references in the HTML
-4. For best results, use a PNG or SVG with transparent background
-5. Recommended dimensions: 300x300px or larger
-
-If you want to use a different filename:
-- Find lines with `src="logo.svg"` in the HTML (there are 2 instances)
-- Replace with your image filename (e.g., `src="church-logo.png"`)
-
-### Update Contact Information
-
-Replace the placeholder contact details in the Contact Section:
-
-- **Address**: Line 485 - Update to your actual church address
-- **Phone**: Line 490 - Update to your church phone number
-- **Email**: Line 495 - Update to your church email
-
-### Add Google Maps
-
-Replace the map placeholder (lines 669-673) with a Google Maps embed:
-
-```html
-<iframe 
-    src="YOUR_GOOGLE_MAPS_EMBED_URL" 
-    width="100%" 
-    height="100%" 
-    style="border:0;" 
-    allowfullscreen="" 
-    loading="lazy">
-</iframe>
-```
-
-### Update Service Times
-
-Modify the service cards (starting at line 311) to reflect your actual service schedule.
-
-### Add Social Media Links
-
-Update the social links in the footer (lines 684-686) with your church's social media profiles.
-
-### Customize Colors
-
-The color scheme uses CSS variables defined at the top of the file (lines 13-19):
-
-```css
---cream: #FAF7F2;
---warm-white: #FFFBF5;
---deep-blue: #1a3a52;
---gold: #C9A961;
-```
-
-Change these values to customize the entire color scheme.
-
-### Add More Content
-
-- Add additional ministry items in the Ministries section
-- Expand the About section with your church's history
-- Add upcoming events or announcements
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers
-
-## Performance
-
-- Single HTML file (no external dependencies except Google Fonts)
-- Optimized animations
-- Fast loading times
-- SEO-friendly structure
-
-## License
-
-This website template is created for Faith Assembly of God, Springfield, Missouri.
+A modern, fully static church website for Springfield Faith Assembly (Springfield, Missouri) built with plain HTML, CSS, and JavaScript. Deployed on Netlify, managed via GitHub. No WordPress, no backend — everything is fast, free, and staff-editable through a built-in admin panel.
 
 ---
 
-**Need help?** Contact your web developer or reach out to Netlify support for deployment assistance.
+## Repository Structure
+
+```
+faithagspringfield/
+├── index.html          # Main public website
+├── admin.html          # Password-protected staff admin panel
+├── events.json         # Upcoming events data
+├── announcements.json  # Top-of-page announcement banner
+├── sermons.json        # Latest sermon info (YouTube embed + details)
+├── hero-bg.jpg         # (optional) Hero background photo — upload to enable
+├── logo 2.png          # Primary site logo
+├── logo.png / logo.svg # Alternate logo formats
+└── README.md           # This file
+```
+
+---
+
+## Website Sections
+
+| Section | Description |
+|---|---|
+| **Hero** | Full-bleed header with logo, tagline, CTA buttons, and service-times strip |
+| **About** | Church welcome text and values |
+| **Services** | Sunday 10:30 AM and Wednesday 7:00 PM service cards |
+| **Plan Your Visit** | Address, times, dress code, kids info, and Google Maps embed |
+| **Ministries** | Six ministry cards (Children, Youth, Worship, Outreach, Small Groups, Women's) |
+| **Events** | Dynamically loaded from `events.json` |
+| **Sermons** | YouTube embed + details loaded from `sermons.json` |
+| **Give** | Online giving call-to-action (update the link to your giving platform) |
+| **Contact** | Address, phone, email, social links, and a contact form |
+| **Footer** | Four-column footer with Quick Links, Get Involved, Contact, and social icons |
+
+---
+
+## Admin Panel
+
+Navigate to `/admin.html` and log in with the admin password.
+
+### Tabs
+
+| Tab | What You Can Do |
+|---|---|
+| **Events** | Add, edit, delete upcoming events. Changes are saved locally until published. |
+| **Announcement** | Toggle the top banner on/off and edit its message text. Supports basic HTML links. |
+| **Sermons** | Update the featured sermon — title, series, speaker, date, YouTube video ID, description. |
+| **Change Password** | Generate a new SHA-256 hash for the admin password. |
+
+### Publishing Changes to the Live Site
+
+The admin panel publishes directly to GitHub via the GitHub API, which triggers an automatic Netlify redeploy (~30–60 seconds).
+
+1. Click **"Save & Publish All"** in the green bar at the top of the admin panel.
+2. If prompted, enter your GitHub Personal Access Token (it saves to your browser automatically after the first time).
+3. Wait about 30–60 seconds and refresh the live site.
+
+All three JSON files (`events.json`, `announcements.json`, `sermons.json`) are published in a single click.
+
+### Default Admin Password
+
+```
+faithag2026
+```
+
+> **To change it:** Go to the **Change Password** tab, enter your new password, copy the generated hash, then edit `admin.html` on GitHub and replace the `STORED_HASH` value near the top of the `<script>` block.
+
+---
+
+## GitHub Personal Access Token (Required for Publishing)
+
+The admin panel needs a GitHub token to push JSON updates. You only need to set this up once per device/browser.
+
+1. Go to [github.com/settings/tokens?type=beta](https://github.com/settings/tokens?type=beta)
+2. Click **"Generate new token"**
+3. Set the token name (e.g. *SFA Admin Panel*)
+4. Set **Repository access** → Only select repositories → **faithagspringfield**
+5. Under **Permissions → Repository permissions**, set:
+   - **Contents** → Read and write
+   - **Metadata** → Read-only (auto-selected)
+6. Click **Generate token** and copy it
+7. Paste it into the green **GitHub Token** field in the admin panel — it saves automatically
+
+---
+
+## JSON File Formats
+
+### events.json
+```json
+[
+  {
+    "id": 1,
+    "title": "Sunday Morning Worship",
+    "date": "2026-04-12",
+    "time": "10:30 AM",
+    "category": "Worship",
+    "description": "Join us for uplifting worship and biblical teaching."
+  }
+]
+```
+**Valid categories:** `Worship`, `Bible Study`, `Outreach`, `Special`, `Youth`, `Prayer`, `Children`
+
+Events more than 7 days in the past are automatically hidden from the public site.
+
+---
+
+### announcements.json
+```json
+{
+  "active": true,
+  "text": "Join us this Sunday for Easter Service at 10:30 AM!"
+}
+```
+Set `"active": false` to hide the banner. The `text` field supports basic HTML (e.g. `<a href="#events">See Events</a>`).
+
+---
+
+### sermons.json
+```json
+[
+  {
+    "id": 1,
+    "title": "Walking in Faith",
+    "series": "Faith That Works",
+    "speaker": "Pastor",
+    "date": "2026-04-06",
+    "youtubeId": "dQw4w9WgXcQ",
+    "description": "An encouraging message on walking by faith."
+  }
+]
+```
+The `youtubeId` is the part after `?v=` in a YouTube URL. Leave it blank to show a placeholder.
+
+---
+
+## Adding a Hero Background Photo
+
+Upload an image named `hero-bg.jpg` to the repository root. The hero section will automatically display it with a dark overlay. Recommended size: 1920×1080px or larger, landscape orientation.
+
+---
+
+## Updating the Give Button
+
+In `index.html`, find the Give section and replace the `href` in the Give Now button with your church's giving platform URL (Tithe.ly, Planning Center Giving, PayPal, etc.):
+
+```html
+<a href="https://YOUR-GIVING-LINK-HERE" target="_blank" class="btn btn-primary">
+    <i class="fa-solid fa-heart"></i> Give Now
+</a>
+```
+
+---
+
+## Deployment
+
+The site is hosted on [Netlify](https://netlify.com) with automatic deploys from the `main` branch of this repository. Any commit to `main` — including those made by the admin panel — triggers a new deploy automatically within 30–60 seconds.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| HTML/CSS/JS | Vanilla — no frameworks |
+| Fonts | Google Fonts (Cormorant Garamond, Inter, Outfit) |
+| Icons | Font Awesome 6 |
+| Hosting | Netlify (free tier) |
+| Source control | GitHub |
+| CMS layer | GitHub Contents API + custom admin panel |
+| Password security | SHA-256 via Web Crypto API (no plaintext passwords) |
+
+---
+
+*Last updated April 2026 — Springfield Faith Assembly, Springfield, Missouri*
