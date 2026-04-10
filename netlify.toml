@@ -1,0 +1,12 @@
+# netlify.toml
+# Static HTML site - no build command needed
+
+[build]
+  publish = "."
+    command = ""
+
+    # Serve index.html for all paths (single-page app routing)
+    [[redirects]]
+      from = "/*"
+        to = "/index.html"
+          status = 200
