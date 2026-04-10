@@ -1,96 +1,145 @@
-# Springfield Faith Assembly — Website
+# Church Website Template
 
-> **Live site:** [faithagspringfield.netlify.app](https://faithagspringfield.netlify.app)
-> **Admin panel:** [faithagspringfield.netlify.app/admin.html](https://faithagspringfield.netlify.app/admin.html)
+> A free, modern, fully editable church website — no WordPress, no backend, no monthly fees.
+> Built with plain HTML/CSS/JS, deployed on Netlify, managed through a built-in admin panel.
 
-A modern, fully static church website for Springfield Faith Assembly (Springfield, Missouri) built with plain HTML, CSS, and JavaScript. Deployed on Netlify, managed via GitHub. No WordPress, no backend — everything is fast, free, and staff-editable through a built-in admin panel.
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/marcus7288/faithagspringfield)
+
+---
+
+## Quick Start (5 Steps)
+
+**Step 1 — Use this template**
+Click the green **"Use this template"** button at the top of this page on GitHub, then choose "Create a new repository." Name it after your church.
+
+**Step 2 — Deploy to Netlify**
+Click the **Deploy to Netlify** button above (or go to [netlify.com](https://netlify.com), connect your GitHub account, and import your new repo). Netlify will build and publish the site automatically — free tier is plenty.
+
+**Step 3 — Edit `config.json`**
+Open `config.json` in your repo and fill in your church's name, address, phone, email, social links, and giving URL. The website reads this file on every load and populates itself automatically.
+
+**Step 4 — Set up the admin panel**
+- Open `/admin.html` on your live site
+- Log in with the default password: `faithag2026` *(change this immediately — see below)*
+- Go to **Church Settings** and enter your GitHub username and repo name
+- Generate a GitHub token (see instructions below) and paste it into the token field
+- Click **Save & Publish All** — your site updates in ~30 seconds
+
+**Step 5 — Upload your logo and hero photo**
+- Replace `logo 2.png` in the repo with your church's logo (keep the same filename, or update it in `index.html`)
+- Upload a photo named `hero-bg.jpg` — it will appear as the hero background automatically
 
 ---
 
 ## Repository Structure
 
 ```
-faithagspringfield/
-├── index.html          # Main public website
-├── admin.html          # Password-protected staff admin panel
-├── events.json         # Upcoming events data
-├── announcements.json  # Top-of-page announcement banner
-├── sermons.json        # Latest sermon info (YouTube embed + details)
-├── hero-bg.jpg         # (optional) Hero background photo — upload to enable
-├── logo 2.png          # Primary site logo
-├── logo.png / logo.svg # Alternate logo formats
-└── README.md           # This file
+/
+├── index.html            # Public website (reads from all JSON files)
+├── admin.html            # Staff admin panel (password protected)
+├── config.json           # ⭐ START HERE — all church settings
+├── events.json           # Upcoming events
+├── announcements.json    # Top-of-page announcement banner
+├── sermons.json          # Featured sermon (YouTube embed + details)
+├── hero-bg.jpg           # Hero background photo (upload to activate)
+├── logo 2.png            # Church logo
+├── CUSTOMIZATION.md      # Guide to colors, fonts, and layout
+└── README.md             # This file
 ```
 
 ---
 
-## Website Sections
+## config.json Reference
 
-| Section | Description |
-|---|---|
-| **Hero** | Full-bleed header with logo, tagline, CTA buttons, and service-times strip |
-| **About** | Church welcome text and values |
-| **Services** | Sunday 10:30 AM and Wednesday 7:00 PM service cards |
-| **Plan Your Visit** | Address, times, dress code, kids info, and Google Maps embed |
-| **Ministries** | Six ministry cards (Children, Youth, Worship, Outreach, Small Groups, Women's) |
-| **Events** | Dynamically loaded from `events.json` |
-| **Sermons** | YouTube embed + details loaded from `sermons.json` |
-| **Give** | Online giving call-to-action (update the link to your giving platform) |
-| **Contact** | Address, phone, email, social links, and a contact form |
-| **Footer** | Four-column footer with Quick Links, Get Involved, Contact, and social icons |
+This is the only file you need to edit to brand the site for a new church:
+
+```json
+{
+  "churchName": "Your Church Name",
+  "churchShortName": "YCN",
+  "tagline": "Love | Grow | Share",
+  "denomination": "Assembly of God",
+  "city": "Your City",
+  "state": "MO",
+  "address": "123 Main Street",
+  "addressLine2": "Your City, MO 00000",
+  "phone": "(000) 000-0000",
+  "email": "info@youremail.com",
+  "services": [
+    { "day": "Sunday", "name": "Sunday Morning Worship", "time": "10:30 AM", "description": "..." },
+    { "day": "Wednesday", "name": "Wednesday Night", "time": "7:00 PM", "description": "..." }
+  ],
+  "social": {
+    "facebook": "https://facebook.com/yourpage",
+    "instagram": "https://instagram.com/yourpage",
+    "youtube": "https://youtube.com/@yourchannel"
+  },
+  "giving": {
+    "url": "https://tithe.ly/give",
+    "label": "Give Online"
+  },
+  "maps": {
+    "embedUrl": "https://www.google.com/maps/embed?pb=..."
+  },
+  "github": {
+    "owner": "your-github-username",
+    "repo": "your-repo-name",
+    "branch": "main"
+  }
+}
+```
+
+> **Getting a Google Maps embed URL:** Go to [maps.google.com](https://maps.google.com), search your church address, click Share → Embed a map, and copy the `src="..."` URL from the iframe code.
 
 ---
 
 ## Admin Panel
 
-Navigate to `/admin.html` and log in with the admin password.
-
-### Tabs
+Visit `/admin.html` on your live site.
 
 | Tab | What You Can Do |
 |---|---|
-| **Events** | Add, edit, delete upcoming events. Changes are saved locally until published. |
-| **Announcement** | Toggle the top banner on/off and edit its message text. Supports basic HTML links. |
-| **Sermons** | Update the featured sermon — title, series, speaker, date, YouTube video ID, description. |
-| **Change Password** | Generate a new SHA-256 hash for the admin password. |
+| **Events** | Add, edit, delete upcoming events |
+| **Announcement** | Toggle the top banner on/off, edit message |
+| **Sermons** | Update featured sermon, YouTube embed, speaker |
+| **Church Settings** | Edit all config.json values (name, address, social, GitHub settings) |
+| **Change Password** | Generate a new SHA-256 password hash |
 
-### Publishing Changes to the Live Site
-
-The admin panel publishes directly to GitHub via the GitHub API, which triggers an automatic Netlify redeploy (~30–60 seconds).
-
-1. Click **"Save & Publish All"** in the green bar at the top of the admin panel.
-2. If prompted, enter your GitHub Personal Access Token (it saves to your browser automatically after the first time).
-3. Wait about 30–60 seconds and refresh the live site.
-
-All three JSON files (`events.json`, `announcements.json`, `sermons.json`) are published in a single click.
-
-### Default Admin Password
-
+### Default Password
 ```
 faithag2026
 ```
+Change it immediately: go to **Change Password**, generate a hash, then replace `STORED_HASH` in `admin.html`.
 
-> **To change it:** Go to the **Change Password** tab, enter your new password, copy the generated hash, then edit `admin.html` on GitHub and replace the `STORED_HASH` value near the top of the `<script>` block.
+### Publishing Changes
+Click **"Save & Publish All"** — the admin panel pushes all JSON files to GitHub via the API, and Netlify redeploys in ~30–60 seconds.
 
 ---
 
-## GitHub Personal Access Token (Required for Publishing)
+## GitHub Token Setup
 
-The admin panel needs a GitHub token to push JSON updates. You only need to set this up once per device/browser.
+Required once per browser to enable publishing from the admin panel.
 
 1. Go to [github.com/settings/tokens?type=beta](https://github.com/settings/tokens?type=beta)
-2. Click **"Generate new token"**
-3. Set the token name (e.g. *SFA Admin Panel*)
-4. Set **Repository access** → Only select repositories → **faithagspringfield**
-5. Under **Permissions → Repository permissions**, set:
-   - **Contents** → Read and write
-   - **Metadata** → Read-only (auto-selected)
-6. Click **Generate token** and copy it
-7. Paste it into the green **GitHub Token** field in the admin panel — it saves automatically
+2. Click **Generate new token** → give it a name (e.g. *Church Admin Panel*)
+3. Set **Repository access** → Only selected repositories → your church repo
+4. Under **Permissions**: set **Contents** to **Read and write** (Metadata is auto-selected)
+5. Click **Generate token**, copy it
+6. Paste into the green token bar in the admin panel — it saves to your browser automatically
 
 ---
 
-## JSON File Formats
+## Changing the Admin Password
+
+1. Open the admin panel → **Change Password** tab
+2. Type your new password and click **Generate Hash**
+3. Copy the hash string
+4. Edit `admin.html` on GitHub → find `STORED_HASH` near the top of the `<script>` block
+5. Replace the existing hash value with your new one
+
+---
+
+## JSON Data Formats
 
 ### events.json
 ```json
@@ -98,69 +147,38 @@ The admin panel needs a GitHub token to push JSON updates. You only need to set 
   {
     "id": 1,
     "title": "Sunday Morning Worship",
-    "date": "2026-04-12",
+    "date": "2026-04-20",
     "time": "10:30 AM",
     "category": "Worship",
     "description": "Join us for uplifting worship and biblical teaching."
   }
 ]
 ```
-**Valid categories:** `Worship`, `Bible Study`, `Outreach`, `Special`, `Youth`, `Prayer`, `Children`
-
-Events more than 7 days in the past are automatically hidden from the public site.
-
----
+Valid categories: `Worship`, `Bible Study`, `Outreach`, `Special`, `Youth`, `Prayer`, `Children`
 
 ### announcements.json
 ```json
-{
-  "active": true,
-  "text": "Join us this Sunday for Easter Service at 10:30 AM!"
-}
+{ "active": true, "text": "Join us this Sunday at 10:30 AM!" }
 ```
-Set `"active": false` to hide the banner. The `text` field supports basic HTML (e.g. `<a href="#events">See Events</a>`).
-
----
 
 ### sermons.json
 ```json
-[
-  {
-    "id": 1,
-    "title": "Walking in Faith",
-    "series": "Faith That Works",
-    "speaker": "Pastor",
-    "date": "2026-04-06",
-    "youtubeId": "dQw4w9WgXcQ",
-    "description": "An encouraging message on walking by faith."
-  }
-]
-```
-The `youtubeId` is the part after `?v=` in a YouTube URL. Leave it blank to show a placeholder.
-
----
-
-## Adding a Hero Background Photo
-
-Upload an image named `hero-bg.jpg` to the repository root. The hero section will automatically display it with a dark overlay. Recommended size: 1920×1080px or larger, landscape orientation.
-
----
-
-## Updating the Give Button
-
-In `index.html`, find the Give section and replace the `href` in the Give Now button with your church's giving platform URL (Tithe.ly, Planning Center Giving, PayPal, etc.):
-
-```html
-<a href="https://YOUR-GIVING-LINK-HERE" target="_blank" class="btn btn-primary">
-    <i class="fa-solid fa-heart"></i> Give Now
-</a>
+[{
+  "id": 1,
+  "title": "Walking in Faith",
+  "series": "Faith That Works",
+  "speaker": "Pastor",
+  "date": "2026-04-13",
+  "youtubeId": "VIDEO_ID_HERE",
+  "description": "Brief description of the message."
+}]
 ```
 
 ---
 
-## Deployment
+## Customization
 
-The site is hosted on [Netlify](https://netlify.com) with automatic deploys from the `main` branch of this repository. Any commit to `main` — including those made by the admin panel — triggers a new deploy automatically within 30–60 seconds.
+See **[CUSTOMIZATION.md](./CUSTOMIZATION.md)** for a full guide to colors, fonts, sections, and layout.
 
 ---
 
@@ -168,14 +186,18 @@ The site is hosted on [Netlify](https://netlify.com) with automatic deploys from
 
 | Layer | Technology |
 |---|---|
-| HTML/CSS/JS | Vanilla — no frameworks |
+| HTML/CSS/JS | Vanilla — no frameworks or build tools |
 | Fonts | Google Fonts (Cormorant Garamond, Inter, Outfit) |
 | Icons | Font Awesome 6 |
 | Hosting | Netlify (free tier) |
 | Source control | GitHub |
 | CMS layer | GitHub Contents API + custom admin panel |
-| Password security | SHA-256 via Web Crypto API (no plaintext passwords) |
+| Password security | SHA-256 via Web Crypto API |
 
 ---
 
-*Last updated April 2026 — Springfield Faith Assembly, Springfield, Missouri*
+## License
+
+Free to use for any church or non-profit. Attribution appreciated but not required.
+
+*Template built by [Professor Mark Maine](https://github.com/marcus7288) — Springfield Faith Assembly, Springfield, Missouri*
