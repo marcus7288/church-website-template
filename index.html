@@ -921,6 +921,7 @@
         }
         const today = new Date();
         today.setHours(0,0,0,0);
+        today.setDate(today.getDate() - 7); // show events from past 7 days
         const upcoming = events
             .filter(e => new Date(e.date + 'T00:00:00') >= today)
             .sort((a, b) => new Date(a.date) - new Date(b.date));
