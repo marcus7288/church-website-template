@@ -658,7 +658,7 @@
         <div class="hero-photo-hint"></div>
         <div class="hero-bg-overlay"></div>
         <div class="hero-content fade-in">
-            <img src="logo 2.png" alt="Springfield Faith Assembly" class="hero-logo">
+            <img src="logo 2.png" alt="Church Logo" class="hero-logo">
             <h1 id="cfg-hero-title">Your Church<br>Name</h1>
             <div class="hero-divider"></div>
             <p class="hero-tagline"><span id="cfg-tagline">Love &bull; Grow &bull; Share</span></p>
@@ -694,7 +694,7 @@
                     </div>
                     <div class="about-badge">
                         <div class="badge-num">2026</div>
-                        <div class="badge-label">Est. Springfield, MO</div>
+                        <div class="badge-label" id="cfg-est-badge">Est. Your City, MO</div>
                     </div>
                 </div>
                 <div class="about-text fade-in-right">
@@ -790,9 +790,9 @@
                 </div>
                 <div class="visit-map fade-in-right">
                     <iframe
-                        id="cfg-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.3!2d-93.3207!3d37.2153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87cf6228b9aaaaab%3A0x1!2s3001+W+Division+St%2C+Springfield%2C+MO+65802!5e0!3m2!1sen!2sus!4v1700000000000"
+                        id="cfg-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.3!2d-93.3207!3d37.2153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87cf6228b9aaaaab%3A0x1!2sYour+Church+Address!5e0!3m2!1sen!2sus!4v1700000000000"
                         allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                        title="Springfield Faith Assembly Map">
+                        title="Church Location Map">
                     </iframe>
                 </div>
             </div>
@@ -826,7 +826,7 @@
                 <div class="ministry-card fade-in">
                     <div class="ministry-card-icon"><i class="fa-solid fa-hands-helping"></i></div>
                     <h3>Outreach &amp; Missions</h3>
-                    <p>Serving Springfield and beyond through local outreach, food ministry, and global missions support.</p>
+                    <p>Serving our community and beyond through local outreach, food ministry, and global missions support.</p>
                 </div>
                 <div class="ministry-card fade-in">
                     <div class="ministry-card-icon"><i class="fa-solid fa-user-group"></i></div>
@@ -880,7 +880,7 @@
                         </div>
                     </div>
                     <div class="sermon-date" id="sermon-date"></div>
-                    <p class="sermon-desc" id="sermon-desc">Watch our latest message from Springfield Faith Assembly.</p>
+                    <p class="sermon-desc" id="sermon-desc">Watch our latest message.</p>
                     <div style="display:flex;gap:12px;flex-wrap:wrap;">
                         <a id="cfg-yt-link" href="https://www.youtube.com/@yourchannel" target="_blank" class="btn btn-primary"><i class="fa-brands fa-youtube"></i> Watch More</a>
                         <a href="#contact" class="btn btn-secondary">Connect With Us</a>
@@ -896,7 +896,7 @@
             <div class="give-text fade-in-left">
                 <div class="section-label light" style="margin-bottom:8px;">Support the Ministry</div>
                 <h2>Give Online</h2>
-                <p>Your generosity makes a difference in Springfield and beyond. Every gift supports worship, outreach, and community ministry.</p>
+                <p>Your generosity makes a difference in our community and beyond. Every gift supports worship, outreach, and community ministry.</p>
             </div>
             <div class="give-cta fade-in-right">
                 <a id="cfg-give-btn" href="https://tithe.ly/give" target="_blank" class="btn btn-primary" style="font-size:1rem;padding:16px 40px;"><i class="fa-solid fa-heart"></i> Give Now</a>
@@ -920,14 +920,14 @@
                             <div class="contact-info-icon"><i class="fa-solid fa-location-dot"></i></div>
                             <div class="contact-info-text">
                                 <h4>Address</h4>
-                                <p>3001 W Division Street<br>Springfield, Missouri 65802</p>
+                                <p id="cfg-contact-addr">123 Main Street<br>Your City, State 00000</p>
                             </div>
                         </div>
                         <div class="contact-info-item">
                             <div class="contact-info-icon"><i class="fa-regular fa-clock"></i></div>
                             <div class="contact-info-text">
                                 <h4>Service Times</h4>
-                                <p>Sunday: 10:30 AM<br>Wednesday: 7:00 PM</p>
+                                <p id="cfg-contact-times">Sunday: 10:30 AM<br>Wednesday: 7:00 PM</p>
                             </div>
                         </div>
                         <div class="contact-info-item">
@@ -981,8 +981,8 @@
     <footer class="site-footer">
         <div class="footer-grid">
             <div class="footer-brand">
-                <img src="logo 2.png" alt="Springfield Faith Assembly">
-                <p>A Spirit-filled community in the heart of Springfield, Missouri. Everyone is welcome at the table.</p>
+                <img src="logo 2.png" alt="Church Logo">
+                <p id="cfg-footer-brand">A Spirit-filled community. Everyone is welcome at the table.</p>
                 <div class="footer-social">
                     <a id="cfg-fb" href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
                     <a id="cfg-ig" href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
@@ -1126,6 +1126,35 @@
         // Footer copyright
         set('cfg-copy-name', c.churchName);
         set('cfg-copy-year', new Date().getFullYear().toString());
+
+        // About badge
+        if (c.city) set('cfg-est-badge', 'Est. ' + c.city + ', ' + (c.state||''));
+
+        // Contact section address & times
+        if (c.address) {
+            const caEl = document.getElementById('cfg-contact-addr');
+            if (caEl) caEl.innerHTML = (c.address||'') + '<br>' + (c.addressLine2||'');
+        }
+        if (c.services) {
+            const ctEl = document.getElementById('cfg-contact-times');
+            if (ctEl) ctEl.innerHTML = c.services.map(s => s.day + ': ' + s.time).join('<br>');
+        }
+
+        // Footer brand text
+        if (c.churchName && c.city) {
+            const fbEl = document.getElementById('cfg-footer-brand');
+            if (fbEl) fbEl.textContent = 'A Spirit-filled community in the heart of ' + c.city + ', ' + (c.state||'') + '. Everyone is welcome at the table.';
+        }
+
+        // Fix addr-full line break
+        if (c.address) {
+            const afEl = document.getElementById('cfg-addr-full');
+            if (afEl) afEl.innerHTML = (c.address||'') + '<br>' + (c.addressLine2||'');
+        }
+        if (c.address) {
+            const faEl = document.getElementById('cfg-footer-addr');
+            if (faEl) faEl.innerHTML = (c.address||'') + '<br>' + (c.city||'') + ', ' + (c.state||'');
+        }
     }
 
     function loadConfig() {
