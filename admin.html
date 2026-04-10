@@ -1,400 +1,649 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Faith AG Events Manager</title>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --cream: #FAF7F2; --deep-blue: #1a3a52; --gold: #C9A961; --soft-gold: #E5D4A6;
-      --charcoal: #2C3E50; --light-gray: #E8E4DF; --planty-green: #69b76e; --red: #e74c3c;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--charcoal); min-height: 100vh; }
-    #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #1a3a52, #2C4A65); }
-    .login-box { background: white; padding: 3rem; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; width: 100%; max-width: 420px; }
-    .login-box .logo { font-size: 2.5rem; margin-bottom: 1rem; }
-    .login-box h1 { font-size: 1.6rem; color: var(--deep-blue); margin-bottom: 0.3rem; }
-    .login-box .subtitle { color: #888; margin-bottom: 2rem; font-size: 0.9rem; }
-    .login-box input { width: 100%; padding: 0.9rem 1rem; border: 2px solid var(--light-gray); border-radius: 8px; font-family: inherit; font-size: 1rem; margin-bottom: 1rem; transition: border-color 0.3s; }
-    .login-box input:focus { outline: none; border-color: var(--gold); }
-    .login-error { color: var(--red); font-size: 0.88rem; margin-bottom: 1rem; display: none; }
-    .login-hint { margin-top: 1.5rem; font-size: 0.78rem; color: #bbb; background: #f9f9f9; border-radius: 8px; padding: 0.8rem; }
-    .login-hint strong { color: #999; }
-    #admin-panel { display: none; }
-    header { background: var(--deep-blue); color: white; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
-    header h1 { font-size: 1.3rem; font-weight: 600; }
-    header p { font-size: 0.82rem; opacity: 0.65; }
-    .header-actions { display: flex; align-items: center; gap: 1rem; }
-    .btn-logout { background: transparent; border: 2px solid rgba(255,255,255,0.4); color: white; padding: 0.45rem 1rem; border-radius: 8px; font-family: inherit; font-size: 0.82rem; cursor: pointer; transition: all 0.3s; }
-    .btn-logout:hover { background: rgba(255,255,255,0.15); }
-    .publish-bar { background: #f0f7f0; border-bottom: 2px solid #d4edda; padding: 0.9rem 2rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-    .publish-bar .token-group { display: flex; align-items: center; gap: 0.6rem; flex: 1; min-width: 260px; }
-    .publish-bar .token-group label { font-size: 0.82rem; font-weight: 600; color: var(--deep-blue); white-space: nowrap; }
-    .publish-bar input[type="password"] { flex: 1; padding: 0.55rem 0.8rem; border: 2px solid #c3e6cb; border-radius: 8px; font-family: monospace; font-size: 0.82rem; background: white; }
-    .publish-bar input[type="password"]:focus { outline: none; border-color: var(--planty-green); }
-    .token-saved-badge { font-size: 0.75rem; color: var(--planty-green); font-weight: 600; white-space: nowrap; display: none; }
-    .token-saved-badge.visible { display: inline; }
-    .publish-status { font-size: 0.82rem; padding: 0.4rem 0.9rem; border-radius: 20px; font-weight: 500; display: none; }
-    .publish-status.publishing { display: inline-block; background: #fff3cd; color: #856404; }
-    .publish-status.success { display: inline-block; background: #d4edda; color: #155724; }
-    .publish-status.error { display: inline-block; background: #f8d7da; color: #721c24; }
-    .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
-    .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
-    .toolbar h2 { font-size: 1.4rem; color: var(--deep-blue); }
-    .btn { padding: 0.65rem 1.4rem; border: none; border-radius: 8px; font-family: inherit; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.4rem; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-primary { background: var(--gold); color: var(--deep-blue); }
-    .btn-primary:hover:not(:disabled) { background: #b8953a; }
-    .btn-publish { background: var(--planty-green); color: white; font-weight: 600; }
-    .btn-publish:hover:not(:disabled) { background: #5aa060; }
-    .btn-danger { background: var(--red); color: white; }
-    .btn-danger:hover:not(:disabled) { background: #c0392b; }
-    .btn-secondary { background: var(--light-gray); color: var(--charcoal); }
-    .btn-secondary:hover:not(:disabled) { background: #d5d0cb; }
-    .events-table-wrapper { background: white; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden; margin-bottom: 2rem; }
-    table { width: 100%; border-collapse: collapse; }
-    thead { background: var(--deep-blue); color: white; }
-    th { padding: 1rem; text-align: left; font-weight: 500; font-size: 0.88rem; }
-    td { padding: 0.9rem 1rem; border-bottom: 1px solid var(--light-gray); font-size: 0.88rem; }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #f9f7f4; }
-    .badge { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
-    .badge-worship { background: #fff3cd; color: #856404; }
-    .badge-bible { background: #d1ecf1; color: #0c5460; }
-    .badge-outreach { background: #d4edda; color: #155724; }
-    .badge-special { background: #f8d7da; color: #721c24; }
-    .badge-youth { background: #e2d9f3; color: #432874; }
-    .badge-other { background: var(--light-gray); color: var(--charcoal); }
-    .action-btns { display: flex; gap: 0.5rem; }
-    .empty-state { text-align: center; padding: 3rem; color: #aaa; }
-    .empty-state span { font-size: 3rem; display: block; margin-bottom: 1rem; }
-    .unsaved-dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; display: none; margin-left: 4px; }
-    .unsaved-dot.visible { display: inline-block; }
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 1rem; }
-    .modal-overlay.active { display: flex; }
-    .modal { background: white; border-radius: 12px; padding: 2rem; width: 100%; max-width: 560px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
-    .modal h2 { font-size: 1.4rem; color: var(--deep-blue); margin-bottom: 1.5rem; }
-    .form-group { margin-bottom: 1.2rem; }
-    .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--deep-blue); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.8rem 1rem; border: 2px solid var(--light-gray); border-radius: 8px; font-family: inherit; font-size: 0.95rem; transition: border-color 0.3s; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); }
-    .form-group textarea { resize: vertical; min-height: 100px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .modal-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; }
-    .settings-section { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
-    .settings-section h3 { color: var(--deep-blue); margin-bottom: 0.4rem; font-size: 1.05rem; }
-    .settings-section p { color: #666; font-size: 0.87rem; margin-bottom: 1rem; line-height: 1.5; }
-    .pw-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; }
-    .pw-row .form-group { flex: 1; min-width: 200px; margin-bottom: 0; }
-    .hash-display { background: #f0f4f8; border-radius: 8px; padding: 0.8rem 1rem; font-size: 0.78rem; word-break: break-all; color: #555; margin-top: 0.8rem; display: none; line-height: 1.6; }
-    .hash-display.visible { display: block; }
-    @media (max-width: 600px) {
-      .form-row { grid-template-columns: 1fr; }
-      th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4) { display: none; }
-      .publish-bar { flex-direction: column; align-items: stretch; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SFA Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#F0F2F5;color:#1A2332;min-height:100vh}
+a{text-decoration:none;color:inherit}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1A3A52,#2C4A65)}
+.login-card{background:#fff;border-radius:16px;padding:48px 40px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center}
+.login-logo{height:60px;margin:0 auto 20px}
+.login-card h1{font-family:'Outfit',sans-serif;font-size:1.5rem;color:#1A3A52;margin-bottom:6px}
+.login-card p{color:#6B8090;font-size:0.88rem;margin-bottom:28px}
+.login-input{width:100%;padding:12px 16px;border:1.5px solid #D8CFC4;border-radius:8px;font-size:1rem;font-family:'Inter',sans-serif;margin-bottom:16px;transition:border 0.2s}
+.login-input:focus{outline:none;border-color:#1A3A52}
+.login-btn{width:100%;padding:13px;background:#1A3A52;color:#fff;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;transition:background 0.2s}
+.login-btn:hover{background:#2C4A65}
+.login-error{color:#C0392B;font-size:0.85rem;margin-top:10px;display:none}
+
+/* LAYOUT */
+#admin-panel{display:none;min-height:100vh;flex-direction:column}
+.admin-header{background:#1A3A52;color:#fff;padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(0,0,0,0.2)}
+.admin-header-left{display:flex;align-items:center;gap:14px}
+.admin-header img{height:34px}
+.admin-header h1{font-family:'Outfit',sans-serif;font-size:1.05rem;font-weight:600;letter-spacing:0.02em}
+.admin-header-right{display:flex;align-items:center;gap:12px}
+.header-btn{padding:7px 16px;border-radius:6px;font-size:0.82rem;font-weight:600;cursor:pointer;border:none;transition:all 0.2s}
+.btn-logout{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85)}
+.btn-logout:hover{background:rgba(255,255,255,0.2)}
+
+/* PUBLISH BAR */
+.publish-bar{background:#1a472a;padding:12px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:2px solid #145222}
+.publish-bar label{color:#d4edda;font-size:0.8rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap}
+.token-input{flex:1;min-width:220px;max-width:420px;padding:8px 12px;border:1.5px solid rgba(255,255,255,0.2);border-radius:6px;background:rgba(255,255,255,0.08);color:#fff;font-family:'Inter',sans-serif;font-size:0.88rem}
+.token-input::placeholder{color:rgba(255,255,255,0.4)}
+.token-input:focus{outline:none;border-color:rgba(255,255,255,0.5)}
+.token-saved{font-size:0.75rem;color:#7bcf8b;display:none;align-items:center;gap:4px}
+#publish-status{font-size:0.8rem;color:rgba(255,255,255,0.7);min-width:140px}
+#publish-status.success{color:#7bcf8b}
+#publish-status.error{color:#f08080}
+#publish-status.publishing{color:#ffd700}
+.token-setup-link{color:rgba(255,255,255,0.5);font-size:0.75rem;text-decoration:underline;cursor:pointer;white-space:nowrap}
+
+/* TABS */
+.admin-body{display:flex;flex:1}
+.admin-sidebar{width:220px;background:#fff;border-right:1px solid #E5E9EE;padding:20px 0;flex-shrink:0}
+.sidebar-section{padding:0 16px;margin-bottom:6px}
+.sidebar-section-label{font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#A0ADB8;padding:0 8px;margin-bottom:4px}
+.sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#3D5166;font-size:0.88rem;font-weight:500;cursor:pointer;transition:all 0.15s;border:none;background:none;width:100%;text-align:left}
+.sidebar-link i{width:18px;text-align:center;color:#A0ADB8;font-size:0.9rem}
+.sidebar-link:hover{background:#F0F2F5;color:#1A2332}
+.sidebar-link.active{background:#EBF5FB;color:#1A3A52;font-weight:600}
+.sidebar-link.active i{color:#1A3A52}
+.unsaved-dot{display:none;width:7px;height:7px;background:#E74C3C;border-radius:50%;margin-left:auto}
+.unsaved-dot.show{display:block}
+
+.admin-content{flex:1;padding:32px;overflow-y:auto}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* CARDS */
+.content-card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06);margin-bottom:24px;overflow:hidden}
+.card-header{padding:20px 24px;border-bottom:1px solid #F0F2F5;display:flex;align-items:center;justify-content:space-between}
+.card-header h2{font-family:'Outfit',sans-serif;font-size:1.05rem;font-weight:600;color:#1A2332}
+.card-header p{font-size:0.82rem;color:#6B8090;margin-top:2px}
+.card-body{padding:24px}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:7px;font-size:0.85rem;font-weight:600;cursor:pointer;border:none;transition:all 0.2s}
+.btn-primary{background:#1A3A52;color:#fff}
+.btn-primary:hover{background:#2C4A65}
+.btn-success{background:#27AE60;color:#fff}
+.btn-success:hover{background:#219150}
+.btn-danger{background:#E74C3C;color:#fff}
+.btn-danger:hover{background:#C0392B}
+.btn-warning{background:#F39C12;color:#fff}
+.btn-warning:hover{background:#D68910}
+.btn-outline{background:transparent;color:#1A3A52;border:1.5px solid #D8CFC4}
+.btn-outline:hover{background:#F0F2F5}
+.btn-sm{padding:6px 13px;font-size:0.78rem}
+.btn-publish{background:#27AE60;color:#fff;padding:9px 22px;position:relative}
+.btn-publish:hover{background:#219150}
+
+/* FORM */
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:0.8rem;font-weight:600;color:#3D5166;letter-spacing:0.04em;margin-bottom:5px;text-transform:uppercase}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 13px;border:1.5px solid #D8CFC4;border-radius:7px;font-family:'Inter',sans-serif;font-size:0.9rem;color:#1A2332;background:#FAFAFA;transition:border 0.2s}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:#1A3A52;background:#fff}
+.form-group textarea{resize:vertical;min-height:90px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-hint{font-size:0.76rem;color:#A0ADB8;margin-top:5px}
+
+/* TOGGLE */
+.toggle-row{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid #F0F2F5}
+.toggle-row:last-child{border-bottom:none}
+.toggle-label{flex:1}
+.toggle-label strong{display:block;font-size:0.92rem;color:#1A2332;margin-bottom:2px}
+.toggle-label span{font-size:0.82rem;color:#A0ADB8}
+.toggle{position:relative;width:44px;height:24px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#D8CFC4;border-radius:24px;cursor:pointer;transition:0.3s}
+.toggle-slider::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:0.3s}
+.toggle input:checked+.toggle-slider{background:#27AE60}
+.toggle input:checked+.toggle-slider::before{transform:translateX(20px)}
+
+/* TABLE */
+.events-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.events-table th{padding:10px 14px;text-align:left;background:#F7F9FC;color:#6B8090;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border-bottom:2px solid #E5E9EE}
+.events-table td{padding:13px 14px;border-bottom:1px solid #F0F2F5;color:#3D5166;vertical-align:middle}
+.events-table tr:hover td{background:#FAFBFC}
+.cat-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:700;letter-spacing:0.06em}
+.cat-Worship{background:#E8F8E8;color:#27AE60}
+.cat-Special{background:#FEF9E7;color:#F39C12}
+.cat-Bible.Study{background:#EBF5FB;color:#2980B9}
+.cat-Outreach{background:#FDEDEC;color:#E74C3C}
+.cat-Youth{background:#F3F0FF;color:#8E44AD}
+.cat-default{background:#F0F2F5;color:#6B8090}
+.action-btns{display:flex;gap:6px}
+
+/* MODAL */
+#modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+#modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.modal-header{padding:22px 24px;border-bottom:1px solid #F0F2F5;display:flex;align-items:center;justify-content:space-between}
+.modal-header h3{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:600}
+.modal-close{background:none;border:none;font-size:1.3rem;cursor:pointer;color:#A0ADB8;line-height:1;padding:4px}
+.modal-close:hover{color:#1A2332}
+.modal-body{padding:24px}
+.modal-footer{padding:16px 24px;border-top:1px solid #F0F2F5;display:flex;justify-content:flex-end;gap:10px}
+
+/* PASSWORD */
+.hash-box{background:#F7F9FC;border:1px solid #E5E9EE;border-radius:8px;padding:14px;font-family:monospace;font-size:0.78rem;word-break:break-all;color:#3D5166;margin-top:10px;display:none}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px}
+.stat-card{background:#fff;border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.06);text-align:center}
+.stat-card .stat-num{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:700;color:#1A3A52;line-height:1}
+.stat-card .stat-label{font-size:0.8rem;color:#A0ADB8;margin-top:4px}
+.stat-card i{font-size:1.4rem;color:#E5D4A6;margin-bottom:8px}
+</style>
 </head>
 <body>
 
+<!-- LOGIN SCREEN -->
 <div id="login-screen">
-  <div class="login-box">
-    <div class="logo">&#9997;</div>
-    <h1>Events Admin</h1>
-    <p class="subtitle">Springfield Faith Assembly</p>
-    <input type="password" id="password-input" placeholder="Enter admin password" autocomplete="current-password" />
-    <div class="login-error" id="login-error">Incorrect password. Please try again.</div>
-    <button class="btn btn-primary" style="width:100%;padding:1rem;justify-content:center;" onclick="login()">Sign In</button>
-    <div class="login-hint"><strong>&#128274; Secure Login</strong> &mdash; Verified with SHA-256, never stored in plaintext.</div>
-  </div>
+<div class="login-card">
+    <img src="logo 2.png" alt="SFA" class="login-logo">
+    <h1>Staff Admin Panel</h1>
+    <p>Springfield Faith Assembly</p>
+    <input type="password" id="password-input" class="login-input" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')login()">
+    <button class="login-btn" onclick="login()"><i class="fa-solid fa-lock-open"></i> Sign In</button>
+    <p class="login-error" id="login-error">Incorrect password. Please try again.</p>
+</div>
 </div>
 
+<!-- ADMIN PANEL -->
 <div id="admin-panel">
-  <header>
-    <div>
-      <h1>&#128197; Events Manager</h1>
-      <p>Springfield Faith Assembly &middot; Admin Panel</p>
-    </div>
-    <div class="header-actions">
-      <span class="publish-status" id="publish-status"></span>
-      <button class="btn-logout" onclick="logout()">Sign Out</button>
-    </div>
-  </header>
 
-  <div class="publish-bar">
-    <div class="token-group">
-      <label for="gh-token">&#128273; GitHub Token:</label>
-      <input type="password" id="gh-token" placeholder="Paste your GitHub token here once&hellip;" oninput="onTokenInput()" autocomplete="off" />
-      <span class="token-saved-badge" id="token-saved-badge">&#10003; Saved</span>
-    </div>
-    <button class="btn btn-publish" id="publish-btn" onclick="publishToGitHub()">
-      &#128640; Save &amp; Publish to Website
-      <span class="unsaved-dot" id="unsaved-dot"></span>
-    </button>
-  </div>
-
-  <div class="container">
-    <div class="toolbar">
-      <h2>Upcoming Events</h2>
-      <button class="btn btn-primary" onclick="openModal()">+ Add Event</button>
+    <!-- Header -->
+    <div class="admin-header">
+        <div class="admin-header-left">
+            <img src="logo 2.png" alt="SFA">
+            <h1>SFA Admin Panel</h1>
+        </div>
+        <div class="admin-header-right">
+            <a href="/" target="_blank" class="header-btn btn-logout" style="color:rgba(255,255,255,0.7)"><i class="fa-solid fa-globe"></i> View Site</a>
+            <button class="header-btn btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>
+        </div>
     </div>
 
-    <div class="events-table-wrapper">
-      <table>
-        <thead>
-          <tr><th>Title</th><th>Date &amp; Time</th><th>Category</th><th>Description</th><th>Actions</th></tr>
-        </thead>
-        <tbody id="events-tbody"></tbody>
-      </table>
+    <!-- Publish Bar -->
+    <div class="publish-bar">
+        <label><i class="fa-brands fa-github"></i> GitHub Token</label>
+        <input type="password" id="gh-token" class="token-input" placeholder="ghp_xxxx... (saved in browser)" oninput="onTokenInput(this.value)">
+        <span class="token-saved" id="token-saved-badge"><i class="fa-solid fa-check"></i> Saved</span>
+        <button class="btn btn-publish" id="publish-btn" onclick="publishAll()">
+            <span id="unsaved-dot" class="unsaved-dot show"></span>
+            <i class="fa-solid fa-rocket"></i> Save &amp; Publish All
+        </button>
+        <span id="publish-status"></span>
+        <a class="token-setup-link" href="https://github.com/settings/tokens?type=beta" target="_blank">Get Token &rarr;</a>
     </div>
 
-    <div class="settings-section">
-      <h3>&#128679; GitHub Token Setup</h3>
-      <p>Paste your GitHub Personal Access Token in the green bar above to enable one-click publishing. Your token is saved only in your browser and sent only to the GitHub API. Steps to create one:</p>
-      <ol style="padding-left:1.2rem;font-size:0.87rem;color:#555;line-height:2.2">
-        <li>Go to <strong>GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens</strong></li>
-        <li>Click <strong>Generate new token</strong></li>
-        <li>Under <em>Repository access</em> choose <strong>Only select repositories</strong> &rarr; <strong>faithagspringfield</strong></li>
-        <li>Under <em>Permissions &rarr; Repository permissions</em> set <strong>Contents</strong> to <strong>Read and write</strong></li>
-        <li>Click <strong>Generate token</strong>, copy it, and paste it in the field above</li>
-      </ol>
-    </div>
+    <!-- Body -->
+    <div class="admin-body">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-section-label">Manage</div>
+                <button class="sidebar-link active" onclick="switchTab('events', this)">
+                    <i class="fa-regular fa-calendar"></i> Events
+                    <span class="unsaved-dot" id="events-dot"></span>
+                </button>
+                <button class="sidebar-link" onclick="switchTab('announcement', this)">
+                    <i class="fa-solid fa-bullhorn"></i> Announcement
+                    <span class="unsaved-dot" id="announcement-dot"></span>
+                </button>
+                <button class="sidebar-link" onclick="switchTab('sermons', this)">
+                    <i class="fa-brands fa-youtube"></i> Sermons
+                    <span class="unsaved-dot" id="sermons-dot"></span>
+                </button>
+            </div>
+            <div class="sidebar-section" style="margin-top:16px">
+                <div class="sidebar-section-label">Settings</div>
+                <button class="sidebar-link" onclick="switchTab('password', this)">
+                    <i class="fa-solid fa-key"></i> Change Password
+                </button>
+            </div>
+        </div>
 
-    <div class="settings-section">
-      <h3>&#128274; Change Admin Password</h3>
-      <p>Enter a new password to generate its hash, then replace <code>STORED_HASH</code> in <code>admin.html</code> on GitHub.</p>
-      <div class="pw-row">
-        <div class="form-group"><label>New Password</label><input type="password" id="new-pw" placeholder="Enter new password (min 8 chars)" /></div>
-        <button class="btn btn-primary" onclick="generateHash()">Generate Hash</button>
-      </div>
-      <div class="hash-display" id="hash-display"></div>
+        <!-- Content -->
+        <div class="admin-content">
+
+            <!-- DASHBOARD stats row -->
+            <div class="stats-row" id="stats-row">
+                <div class="stat-card"><i class="fa-regular fa-calendar"></i><div class="stat-num" id="stat-events">0</div><div class="stat-label">Upcoming Events</div></div>
+                <div class="stat-card"><i class="fa-solid fa-bullhorn"></i><div class="stat-num" id="stat-banner">OFF</div><div class="stat-label">Banner Status</div></div>
+                <div class="stat-card"><i class="fa-brands fa-youtube"></i><div class="stat-num" id="stat-sermons">0</div><div class="stat-label">Sermons</div></div>
+            </div>
+
+            <!-- EVENTS TAB -->
+            <div id="tab-events" class="tab-pane active">
+                <div class="content-card">
+                    <div class="card-header">
+                        <div><h2>Upcoming Events</h2><p>Add, edit, or remove events shown on the website.</p></div>
+                        <button class="btn btn-primary btn-sm" onclick="openModal()"><i class="fa-solid fa-plus"></i> Add Event</button>
+                    </div>
+                    <div class="card-body" style="padding:0">
+                        <table class="events-table">
+                            <thead><tr><th>Title</th><th>Date</th><th>Time</th><th>Category</th><th>Actions</th></tr></thead>
+                            <tbody id="events-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ANNOUNCEMENT TAB -->
+            <div id="tab-announcement" class="tab-pane">
+                <div class="content-card">
+                    <div class="card-header">
+                        <div><h2>Announcement Banner</h2><p>Display a notice at the top of the website. Toggle it on/off anytime.</p></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="toggle-row">
+                            <div class="toggle-label"><strong>Show Banner on Website</strong><span>Turn the announcement bar on or off</span></div>
+                            <label class="toggle"><input type="checkbox" id="banner-active" onchange="announcementChanged()"><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="form-group" style="margin-top:20px">
+                            <label>Banner Message</label>
+                            <textarea id="banner-text" rows="3" placeholder="Join us this Sunday for Easter Service at 10:30 AM! Everyone is welcome." oninput="announcementChanged()"></textarea>
+                            <div class="form-hint">You can include a link like: &lt;a href="#events"&gt;See Events&lt;/a&gt;</div>
+                        </div>
+                        <div style="padding:16px;background:#FEF9E7;border-radius:8px;border-left:4px solid #F39C12;font-size:0.85rem;color:#7D6608;">
+                            <strong>Preview:</strong> <span id="banner-preview" style="font-style:italic;color:#555"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SERMONS TAB -->
+            <div id="tab-sermons" class="tab-pane">
+                <div class="content-card">
+                    <div class="card-header">
+                        <div><h2>Latest Sermon</h2><p>Update the featured sermon shown on the website.</p></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group"><label>Sermon Title</label><input type="text" id="sermon-title" placeholder="Walking in Faith" oninput="sermonChanged()"></div>
+                            <div class="form-group"><label>Series Name</label><input type="text" id="sermon-series" placeholder="Faith That Works" oninput="sermonChanged()"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Speaker Name</label><input type="text" id="sermon-speaker" placeholder="Pastor" oninput="sermonChanged()"></div>
+                            <div class="form-group"><label>Date</label><input type="date" id="sermon-date" oninput="sermonChanged()"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>YouTube Video ID</label>
+                            <input type="text" id="sermon-youtube" placeholder="e.g. dQw4w9WgXcQ (from youtube.com/watch?v=dQw4w9WgXcQ)" oninput="sermonChanged()">
+                            <div class="form-hint">Paste just the video ID from the URL — not the full link.</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="sermon-desc" placeholder="Brief description of the message..." oninput="sermonChanged()"></textarea>
+                        </div>
+                        <div style="padding:14px;background:#EBF5FB;border-radius:8px;font-size:0.82rem;color:#1A5276;border-left:4px solid #2980B9">
+                            <i class="fa-solid fa-circle-info"></i> After saving, this sermon will appear in the &ldquo;Sermons&rdquo; section of the website. Leave YouTube ID blank to show a placeholder.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASSWORD TAB -->
+            <div id="tab-password" class="tab-pane">
+                <div class="content-card">
+                    <div class="card-header"><div><h2>Change Admin Password</h2><p>Generate a new password hash and update the admin.html file.</p></div></div>
+                    <div class="card-body">
+                        <div class="form-group"><label>New Password</label><input type="password" id="new-pw" placeholder="Enter new password"></div>
+                        <button class="btn btn-primary" onclick="generateHash()"><i class="fa-solid fa-key"></i> Generate Hash</button>
+                        <div class="hash-box" id="hash-display"></div>
+                        <p style="font-size:0.82rem;color:#A0ADB8;margin-top:16px">Copy the hash above and replace the <code>STORED_HASH</code> value in admin.html via GitHub.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /admin-content -->
+    </div><!-- /admin-body -->
+</div><!-- /admin-panel -->
+
+<!-- EVENT MODAL -->
+<div id="modal-overlay">
+<div class="modal">
+    <div class="modal-header">
+        <h3 id="modal-title">Add Event</h3>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
     </div>
-  </div>
+    <div class="modal-body">
+        <input type="hidden" id="f-id">
+        <div class="form-group"><label>Event Title</label><input type="text" id="f-title" placeholder="Easter Sunday Service"></div>
+        <div class="form-row">
+            <div class="form-group"><label>Date</label><input type="date" id="f-date"></div>
+            <div class="form-group"><label>Time</label><input type="text" id="f-time" placeholder="10:30 AM"></div>
+        </div>
+        <div class="form-group"><label>Category</label>
+            <select id="f-category">
+                <option>Worship</option><option>Bible Study</option><option>Outreach</option>
+                <option>Special</option><option>Youth</option><option>Prayer</option><option>Children</option>
+            </select>
+        </div>
+        <div class="form-group"><label>Description</label><textarea id="f-description" placeholder="Event details..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveEvent()"><i class="fa-solid fa-floppy-disk"></i> Save Event</button>
+    </div>
 </div>
-
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
-    <h2 id="modal-title">Add New Event</h2>
-    <div class="form-group"><label>Event Title *</label><input type="text" id="f-title" placeholder="e.g. Easter Sunday Service" /></div>
-    <div class="form-row">
-      <div class="form-group"><label>Date *</label><input type="date" id="f-date" /></div>
-      <div class="form-group"><label>Time *</label><input type="text" id="f-time" placeholder="e.g. 10:30 AM" /></div>
-    </div>
-    <div class="form-group">
-      <label>Category</label>
-      <select id="f-category">
-        <option value="Worship">Worship</option>
-        <option value="Bible Study">Bible Study</option>
-        <option value="Outreach">Outreach</option>
-        <option value="Youth">Youth</option>
-        <option value="Special">Special Event</option>
-        <option value="Other">Other</option>
-      </select>
-    </div>
-    <div class="form-group"><label>Description</label><textarea id="f-description" placeholder="Brief description of the event..."></textarea></div>
-    <div class="modal-actions">
-      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveEvent()">Save Event</button>
-    </div>
-  </div>
 </div>
-
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
-  const STORED_HASH = '1ef8e607eaee9385b078c85dd968696d4b6ea7b03a397ea46f3a1c5c852c6103';
-  const GH_OWNER = 'marcus7288';
-  const GH_REPO  = 'faithagspringfield';
-  const GH_FILE  = 'events.json';
-  const GH_BRANCH = 'main';
+// ===== CONFIG =====
+const STORED_HASH = '1ef8e607eaee9385b078c85dd968696d4b6ea7b03a397ea46f3a1c5c852c6103';
+const GH_OWNER = 'marcus7288';
+const GH_REPO = 'faithagspringfield';
+const GH_BRANCH = 'main';
 
-  async function sha256(msg) {
-    const buf = new TextEncoder().encode(msg);
-    const hash = await crypto.subtle.digest('SHA-256', buf);
-    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
-  }
+// ===== SHA256 =====
+async function sha256(msg) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
 
-  function b64encode(str) {
+// ===== BASE64 =====
+function b64encode(str) {
     const bytes = new TextEncoder().encode(str);
     let bin = '';
     bytes.forEach(b => bin += String.fromCharCode(b));
     return btoa(bin);
-  }
+}
 
-  async function login() {
+// ===== AUTH =====
+async function login() {
     const pw = document.getElementById('password-input').value;
-    if (!pw) return;
     const hash = await sha256(pw);
     if (hash === STORED_HASH) {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('admin-panel').style.display = 'block';
-      document.getElementById('login-error').style.display = 'none';
-      initAdmin();
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'flex';
+        initAdmin();
     } else {
-      document.getElementById('login-error').style.display = 'block';
-      document.getElementById('password-input').value = '';
+        document.getElementById('login-error').style.display = 'block';
+        document.getElementById('password-input').value = '';
     }
-  }
-
-  function logout() {
-    document.getElementById('login-screen').style.display = 'flex';
+}
+function logout() {
     document.getElementById('admin-panel').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('password-input').value = '';
-  }
+}
 
-  document.getElementById('password-input').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+// ===== TABS =====
+function switchTab(name, btn) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+}
 
-  let events = [], editingId = null, nextId = 1, hasUnsaved = false;
+// ===== TOKEN =====
+function onTokenInput(val) {
+    localStorage.setItem('faithag_gh_token', val);
+    document.getElementById('token-saved-badge').style.display = val ? 'flex' : 'none';
+}
 
-  function markUnsaved() { hasUnsaved = true; document.getElementById('unsaved-dot').classList.add('visible'); }
-  function markSaved()   { hasUnsaved = false; document.getElementById('unsaved-dot').classList.remove('visible'); }
+// ===== UNSAVED =====
+let unsavedEvents = false, unsavedAnnouncement = false, unsavedSermons = false;
+function markUnsaved(type) {
+    if (type === 'events') { unsavedEvents = true; document.getElementById('events-dot').classList.add('show'); }
+    if (type === 'announcement') { unsavedAnnouncement = true; document.getElementById('announcement-dot').classList.add('show'); }
+    if (type === 'sermons') { unsavedSermons = true; document.getElementById('sermons-dot').classList.add('show'); }
+    document.getElementById('unsaved-dot').classList.add('show');
+}
+function markAllSaved() {
+    unsavedEvents = false; unsavedAnnouncement = false; unsavedSermons = false;
+    document.querySelectorAll('.unsaved-dot').forEach(d => d.classList.remove('show'));
+}
 
-  function initAdmin() {
-    const savedToken = localStorage.getItem('faithag_gh_token');
-    if (savedToken) {
-      document.getElementById('gh-token').value = savedToken;
-      document.getElementById('token-saved-badge').classList.add('visible');
-    }
-    loadEvents();
-  }
+// ===== EVENTS =====
+let events = [];
+function loadEvents() {
+    fetch('./events.json?v=' + Date.now())
+        .then(r => r.json())
+        .then(data => { events = data; renderEventsTable(); updateStats(); })
+        .catch(() => { events = []; });
+}
 
-  function onTokenInput() {
-    const token = document.getElementById('gh-token').value.trim();
-    if (token) { localStorage.setItem('faithag_gh_token', token); document.getElementById('token-saved-badge').classList.add('visible'); }
-    else { localStorage.removeItem('faithag_gh_token'); document.getElementById('token-saved-badge').classList.remove('visible'); }
-  }
-
-  async function loadEvents() {
-    const stored = localStorage.getItem('faithag_events');
-    if (stored) {
-      try { events = JSON.parse(stored); nextId = events.length ? Math.max(...events.map(e=>e.id))+1 : 1; render(); return; } catch(e) {}
-    }
-    try {
-      const res = await fetch('./events.json');
-      events = await res.json();
-      nextId = events.length ? Math.max(...events.map(e=>e.id))+1 : 1;
-      localStorage.setItem('faithag_events', JSON.stringify(events));
-    } catch(e) { events = []; }
-    render();
-  }
-
-  async function publishToGitHub() {
-    const token = document.getElementById('gh-token').value.trim() || localStorage.getItem('faithag_gh_token') || '';
-    if (!token) { setStatus('error', '&#128274; Please paste your GitHub token in the field above first.'); return; }
-    const btn = document.getElementById('publish-btn');
-    btn.disabled = true;
-    setStatus('publishing', '&#9203; Publishing…');
-    try {
-      const sorted = [...events].sort((a,b) => new Date(a.date)-new Date(b.date));
-      const content = JSON.stringify(sorted, null, 2);
-      const apiBase = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_FILE;
-      const headers = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' };
-      const getRes = await fetch(apiBase + '?ref=' + GH_BRANCH, { headers });
-      let sha = null;
-      if (getRes.ok) { sha = (await getRes.json()).sha; }
-      else if (getRes.status !== 404) { const e = await getRes.json(); throw new Error(e.message || 'HTTP ' + getRes.status); }
-      const body = { message: 'Update events via admin panel', content: b64encode(content), branch: GH_BRANCH };
-      if (sha) body.sha = sha;
-      const putRes = await fetch(apiBase, { method: 'PUT', headers, body: JSON.stringify(body) });
-      if (!putRes.ok) { const e = await putRes.json(); throw new Error(e.message || 'HTTP ' + putRes.status); }
-      markSaved();
-      setStatus('success', '&#10003; Published! Website updating in ~30 seconds.');
-      setTimeout(() => setStatus('idle', ''), 15000);
-    } catch(err) {
-      setStatus('error', '&#10007; ' + err.message);
-    } finally {
-      btn.disabled = false;
-    }
-  }
-
-  function setStatus(type, msg) {
-    const el = document.getElementById('publish-status');
-    el.className = 'publish-status ' + type;
-    el.innerHTML = msg;
-  }
-
-  function render() {
+function renderEventsTable() {
     const tbody = document.getElementById('events-tbody');
     if (!events.length) {
-      tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><span>&#128197;</span>No events yet. Click "+ Add Event" to get started.</div></td></tr>';
-    } else {
-      const sorted = [...events].sort((a,b) => new Date(a.date)-new Date(b.date));
-      tbody.innerHTML = sorted.map(ev => `<tr>
-        <td><strong>${esc(ev.title)}</strong></td>
-        <td>${fmtDate(ev.date)}<br><small style="color:#888">${esc(ev.time)}</small></td>
-        <td><span class="badge badge-${bc(ev.category)}">${esc(ev.category)}</span></td>
-        <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(ev.description||'')}</td>
-        <td><div class="action-btns">
-          <button class="btn btn-secondary" style="padding:.35rem .7rem;font-size:.8rem" onclick="editEvent(${ev.id})">&#9998; Edit</button>
-          <button class="btn btn-danger" style="padding:.35rem .7rem;font-size:.8rem" onclick="deleteEvent(${ev.id})">&#128465;</button>
-        </div></td>
-      </tr>`).join('');
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#A0ADB8;padding:32px">No events yet. Click + Add Event to create one.</td></tr>';
+        return;
     }
-  }
+    const sorted = [...events].sort((a,b) => new Date(a.date) - new Date(b.date));
+    tbody.innerHTML = sorted.map(e => {
+        const cat = (e.category||'').replace(/s+/g,'-');
+        return `<tr>
+            <td style="font-weight:600;color:#1A2332">${esc(e.title)}</td>
+            <td>${fmtDate(e.date)}</td>
+            <td>${esc(e.time)}</td>
+            <td><span class="cat-badge cat-${cat}">${esc(e.category||'')}</span></td>
+            <td><div class="action-btns">
+                <button class="btn btn-warning btn-sm" onclick="editEvent(${e.id})"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deleteEvent(${e.id})"><i class="fa-solid fa-trash"></i></button>
+            </div></td>
+        </tr>`;
+    }).join('');
+}
 
-  function bc(cat) { return {'Worship':'worship','Bible Study':'bible','Outreach':'outreach','Special':'special','Youth':'youth'}[cat]||'other'; }
-  function fmtDate(d) { return d ? new Date(d+'T00:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : ''; }
-  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmtDate(d) {
+    const dt = new Date(d + 'T00:00:00');
+    return dt.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
 
-  function openModal(id) {
+// ===== MODAL =====
+let editingId = null;
+function openModal(id) {
     editingId = id || null;
-    document.getElementById('modal-title').textContent = id ? 'Edit Event' : 'Add New Event';
+    document.getElementById('modal-title').textContent = id ? 'Edit Event' : 'Add Event';
     if (id) {
-      const ev = events.find(e=>e.id===id);
-      document.getElementById('f-title').value=ev.title;
-      document.getElementById('f-date').value=ev.date;
-      document.getElementById('f-time').value=ev.time;
-      document.getElementById('f-category').value=ev.category;
-      document.getElementById('f-description').value=ev.description||'';
+        const e = events.find(ev => ev.id === id);
+        if (e) {
+            document.getElementById('f-id').value = e.id;
+            document.getElementById('f-title').value = e.title || '';
+            document.getElementById('f-date').value = e.date || '';
+            document.getElementById('f-time').value = e.time || '';
+            document.getElementById('f-category').value = e.category || 'Worship';
+            document.getElementById('f-description').value = e.description || '';
+        }
     } else {
-      ['f-title','f-date','f-time','f-description'].forEach(i=>document.getElementById(i).value='');
-      document.getElementById('f-category').value='Worship';
+        document.getElementById('f-id').value = '';
+        document.getElementById('f-title').value = '';
+        document.getElementById('f-date').value = '';
+        document.getElementById('f-time').value = '';
+        document.getElementById('f-category').value = 'Worship';
+        document.getElementById('f-description').value = '';
     }
-    document.getElementById('modal-overlay').classList.add('active');
-    setTimeout(()=>document.getElementById('f-title').focus(),80);
-  }
-
-  function closeModal() { document.getElementById('modal-overlay').classList.remove('active'); editingId=null; }
-  document.getElementById('modal-overlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeModal(); });
-
-  function saveEvent() {
-    const title=document.getElementById('f-title').value.trim();
-    const date=document.getElementById('f-date').value;
-    const time=document.getElementById('f-time').value.trim();
-    const category=document.getElementById('f-category').value;
-    const description=document.getElementById('f-description').value.trim();
-    if(!title||!date||!time){alert('Title, Date, and Time are required.');return;}
-    if(editingId){const i=events.findIndex(e=>e.id===editingId);events[i]={id:editingId,title,date,time,category,description};}
-    else{events.push({id:nextId++,title,date,time,category,description});}
-    localStorage.setItem('faithag_events', JSON.stringify(events));
-    markUnsaved();
-    render();
+    document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function saveEvent() {
+    const title = document.getElementById('f-title').value.trim();
+    const date = document.getElementById('f-date').value;
+    const time = document.getElementById('f-time').value.trim();
+    if (!title || !date || !time) { alert('Please fill in Title, Date, and Time.'); return; }
+    if (editingId) {
+        const idx = events.findIndex(e => e.id === editingId);
+        if (idx >= 0) {
+            events[idx] = { id: editingId, title, date, time,
+                category: document.getElementById('f-category').value,
+                description: document.getElementById('f-description').value.trim() };
+        }
+    } else {
+        const newId = events.length ? Math.max(...events.map(e => e.id)) + 1 : 1;
+        events.push({ id: newId, title, date, time,
+            category: document.getElementById('f-category').value,
+            description: document.getElementById('f-description').value.trim() });
+    }
     closeModal();
-  }
+    renderEventsTable();
+    updateStats();
+    markUnsaved('events');
+}
+function editEvent(id) { openModal(id); }
+function deleteEvent(id) {
+    if (!confirm('Delete this event?')) return;
+    events = events.filter(e => e.id !== id);
+    renderEventsTable();
+    updateStats();
+    markUnsaved('events');
+}
 
-  function editEvent(id){openModal(id);}
+// ===== ANNOUNCEMENT =====
+let announcementData = { active: false, text: '' };
+function loadAnnouncement() {
+    fetch('./announcements.json?v=' + Date.now())
+        .then(r => r.json())
+        .then(data => {
+            announcementData = data;
+            document.getElementById('banner-active').checked = !!data.active;
+            document.getElementById('banner-text').value = data.text || '';
+            updateBannerPreview();
+            updateStats();
+        })
+        .catch(() => {});
+}
+function announcementChanged() {
+    announcementData.active = document.getElementById('banner-active').checked;
+    announcementData.text = document.getElementById('banner-text').value;
+    updateBannerPreview();
+    updateStats();
+    markUnsaved('announcement');
+}
+function updateBannerPreview() {
+    const preview = document.getElementById('banner-preview');
+    const txt = document.getElementById('banner-text').value;
+    preview.textContent = txt || '(no text set)';
+}
 
-  function deleteEvent(id) {
-    const ev=events.find(e=>e.id===id);
-    if(!ev)return;
-    if(confirm('Delete "'+ev.title+'"?')){
-      events=events.filter(e=>e.id!==id);
-      localStorage.setItem('faithag_events', JSON.stringify(events));
-      markUnsaved();
-      render();
+// ===== SERMONS =====
+let sermonsData = [];
+function loadSermons() {
+    fetch('./sermons.json?v=' + Date.now())
+        .then(r => r.json())
+        .then(data => {
+            sermonsData = data || [];
+            if (sermonsData.length) {
+                const s = sermonsData[0];
+                document.getElementById('sermon-title').value = s.title || '';
+                document.getElementById('sermon-series').value = s.series || '';
+                document.getElementById('sermon-speaker').value = s.speaker || '';
+                document.getElementById('sermon-date').value = s.date || '';
+                document.getElementById('sermon-youtube').value = s.youtubeId || '';
+                document.getElementById('sermon-desc').value = s.description || '';
+            }
+            updateStats();
+        })
+        .catch(() => {});
+}
+function sermonChanged() {
+    markUnsaved('sermons');
+}
+function getSermonData() {
+    return [{
+        id: 1,
+        title: document.getElementById('sermon-title').value.trim(),
+        series: document.getElementById('sermon-series').value.trim(),
+        speaker: document.getElementById('sermon-speaker').value.trim(),
+        date: document.getElementById('sermon-date').value,
+        youtubeId: document.getElementById('sermon-youtube').value.trim(),
+        description: document.getElementById('sermon-desc').value.trim()
+    }];
+}
+
+// ===== STATS =====
+function updateStats() {
+    const today = new Date(); today.setHours(0,0,0,0); today.setDate(today.getDate() - 7);
+    const upcoming = events.filter(e => new Date(e.date + 'T00:00:00') >= today).length;
+    document.getElementById('stat-events').textContent = upcoming;
+    const active = document.getElementById('banner-active') ? document.getElementById('banner-active').checked : announcementData.active;
+    document.getElementById('stat-banner').textContent = active ? 'ON' : 'OFF';
+    document.getElementById('stat-banner').style.color = active ? '#27AE60' : '#E74C3C';
+    document.getElementById('stat-sermons').textContent = sermonsData.length;
+}
+
+// ===== PUBLISH ALL =====
+async function publishAll() {
+    const token = document.getElementById('gh-token').value || localStorage.getItem('faithag_gh_token') || '';
+    if (!token) { setStatus('error', 'Please enter your GitHub token first.'); return; }
+    setStatus('publishing', 'Publishing...');
+    const btn = document.getElementById('publish-btn');
+    btn.disabled = true;
+
+    const files = [
+        { path: 'events.json', content: JSON.stringify(events, null, 2), label: 'events' },
+        { path: 'announcements.json', content: JSON.stringify({ active: document.getElementById('banner-active').checked, text: document.getElementById('banner-text').value }, null, 2), label: 'announcement' },
+        { path: 'sermons.json', content: JSON.stringify(getSermonData(), null, 2), label: 'sermons' }
+    ];
+
+    let successCount = 0;
+    for (const file of files) {
+        try {
+            const shaRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${file.path}`, {
+                headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' }
+            });
+            const shaData = shaRes.ok ? await shaRes.json() : {};
+            const payload = { message: `Update ${file.path} via admin panel`, content: b64encode(file.content), branch: GH_BRANCH };
+            if (shaData.sha) payload.sha = shaData.sha;
+            const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${file.path}`, {
+                method: 'PUT',
+                headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (putRes.ok) successCount++;
+            else { const err = await putRes.json(); throw new Error(err.message); }
+        } catch(e) {
+            setStatus('error', 'Error: ' + e.message);
+            btn.disabled = false;
+            return;
+        }
     }
-  }
+    setStatus('success', '\u2713 All ' + successCount + ' files published! Site updating...');
+    markAllSaved();
+    btn.disabled = false;
+    setTimeout(() => setStatus('', ''), 6000);
+}
 
-  async function generateHash() {
-    const pw=document.getElementById('new-pw').value;
-    if(!pw||pw.length<6){alert('Please enter at least 6 characters.');return;}
-    const hash=await sha256(pw);
-    const d=document.getElementById('hash-display');
-    d.className='hash-display visible';
-    d.innerHTML='<strong style="color:var(--deep-blue)">New STORED_HASH (copy this entire string):</strong><br><br>'
-      +'<code style="background:#e8f4fd;padding:4px 8px;border-radius:4px;word-break:break-all;font-size:0.85rem;display:block;margin-bottom:8px">'+hash+'</code>'
-      +'In GitHub, open <strong>admin.html</strong>, find <code>const STORED_HASH =</code> and replace the hash string with the value above, then commit.';
-  }
+function setStatus(type, msg) {
+    const el = document.getElementById('publish-status');
+    el.className = type;
+    el.textContent = msg;
+}
+
+// ===== PASSWORD =====
+async function generateHash() {
+    const pw = document.getElementById('new-pw').value;
+    if (!pw) { alert('Enter a password first.'); return; }
+    const hash = await sha256(pw);
+    const box = document.getElementById('hash-display');
+    box.textContent = hash;
+    box.style.display = 'block';
+}
+
+// ===== INIT =====
+function initAdmin() {
+    const saved = localStorage.getItem('faithag_gh_token') || '';
+    if (saved) {
+        document.getElementById('gh-token').value = saved;
+        document.getElementById('token-saved-badge').style.display = 'flex';
+    }
+    loadEvents();
+    loadAnnouncement();
+    loadSermons();
+}
 </script>
 </body>
 </html>
