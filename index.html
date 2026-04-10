@@ -902,7 +902,7 @@
     async function loadEvents() {
         const grid = document.getElementById('events-grid');
         try {
-            const res = await fetch('./events.json');
+            const res = await fetch('./events.json?v=' + Date.now());
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const data = await res.json();
             renderEvents(data);
