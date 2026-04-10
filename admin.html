@@ -1,559 +1,334 @@
 <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Faith AG Events Manager</title>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Faith AG Events Manager</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --cream: #FAF7F2;
-      --deep-blue: #1a3a52;
-      --gold: #C9A961;
-              --soft-gold: #E5D4A6;
-              --charcoal: #2C3E50;
-      --light-gray: #E8E4DF;
-              --planty-green: #69b76e;
-      --red: #e74c3c;
-        }
+      --cream: #FAF7F2; --deep-blue: #1a3a52; --gold: #C9A961; --soft-gold: #E5D4A6;
+      --charcoal: #2C3E50; --light-gray: #E8E4DF; --planty-green: #69b76e; --red: #e74c3c;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-            font-family: 'Outfit', sans-serif;
-      background: var(--cream);
-      color: var(--charcoal);
-      min-height: 100vh;
-}
-
-    /* Login Screen */
-    #login-screen {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #1a3a52, #2C4A65);
-}
-    .login-box {
-            background: white;
-      padding: 3rem;
-      border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      text-align: center;
-      width: 100%;
-      max-width: 400px;
-}
-    .login-box h1 {
-            font-size: 1.8rem;
-      color: var(--deep-blue);
-      margin-bottom: 0.5rem;
-}
-    .login-box p { color: #888; margin-bottom: 2rem; font-size: 0.95rem; }
-    .login-box input {
-            width: 100%;
-      padding: 0.9rem 1rem;
-      border: 2px solid var(--light-gray);
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      transition: border-color 0.3s;
-}
+    body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--charcoal); min-height: 100vh; }
+    #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #1a3a52, #2C4A65); }
+    .login-box { background: white; padding: 3rem; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; width: 100%; max-width: 420px; }
+    .login-box .logo { font-size: 2.5rem; margin-bottom: 1rem; }
+    .login-box h1 { font-size: 1.6rem; color: var(--deep-blue); margin-bottom: 0.3rem; }
+    .login-box .subtitle { color: #888; margin-bottom: 2rem; font-size: 0.9rem; }
+    .login-box input { width: 100%; padding: 0.9rem 1rem; border: 2px solid var(--light-gray); border-radius: 8px; font-family: inherit; font-size: 1rem; margin-bottom: 1rem; transition: border-color 0.3s; }
     .login-box input:focus { outline: none; border-color: var(--gold); }
-    .login-error { color: var(--red); font-size: 0.9rem; margin-bottom: 1rem; display: none; }
-
-    /* Admin Panel */
+    .login-error { color: var(--red); font-size: 0.88rem; margin-bottom: 1rem; display: none; }
+    .login-hint { margin-top: 1.5rem; font-size: 0.78rem; color: #bbb; background: #f9f9f9; border-radius: 8px; padding: 0.8rem; }
+    .login-hint strong { color: #999; }
     #admin-panel { display: none; }
-    header {
-            background: var(--deep-blue);
-      color: white;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-}
-    header h1 { font-size: 1.4rem; font-weight: 600; }
-    header p { font-size: 0.85rem; opacity: 0.7; }
-
+    header { background: var(--deep-blue); color: white; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    header h1 { font-size: 1.3rem; font-weight: 600; }
+    header p { font-size: 0.82rem; opacity: 0.65; }
     .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
-
-    /* Toolbar */
-    .toolbar {
-            display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-      gap: 1rem;
-}
+    .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
     .toolbar h2 { font-size: 1.4rem; color: var(--deep-blue); }
-
-    /* Buttons */
-    .btn {
-            padding: 0.7rem 1.5rem;
-      border: none;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s;
-}
+    .btn { padding: 0.65rem 1.4rem; border: none; border-radius: 8px; font-family: inherit; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.3s; }
     .btn-primary { background: var(--gold); color: var(--deep-blue); }
     .btn-primary:hover { background: #b8953a; }
-        .btn-danger { background: var(--red); color: white; }
+    .btn-danger { background: var(--red); color: white; }
     .btn-danger:hover { background: #c0392b; }
-        .btn-success { background: var(--planty-green); color: white; }
-          .btn-success:hover { background: #5aa060; }
+    .btn-success { background: var(--planty-green); color: white; }
+    .btn-success:hover { background: #5aa060; }
     .btn-secondary { background: var(--light-gray); color: var(--charcoal); }
     .btn-secondary:hover { background: #d5d0cb; }
-        .btn-logout {
-                background: transparent;
-      border: 2px solid rgba(255,255,255,0.5);
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.3s;
-                         }
+    .btn-logout { background: transparent; border: 2px solid rgba(255,255,255,0.5); color: white; padding: 0.45rem 1rem; border-radius: 8px; font-family: inherit; font-size: 0.82rem; cursor: pointer; transition: all 0.3s; }
     .btn-logout:hover { background: rgba(255,255,255,0.15); }
-
-    /* Events Table */
-    .events-table-wrapper {
-            background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      overflow: hidden;
-      margin-bottom: 2rem;
-}
+    .events-table-wrapper { background: white; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden; margin-bottom: 2rem; }
     table { width: 100%; border-collapse: collapse; }
     thead { background: var(--deep-blue); color: white; }
-    th { padding: 1rem; text-align: left; font-weight: 500; font-size: 0.9rem; }
-    td { padding: 1rem; border-bottom: 1px solid var(--light-gray); font-size: 0.9rem; }
+    th { padding: 1rem; text-align: left; font-weight: 500; font-size: 0.88rem; }
+    td { padding: 0.9rem 1rem; border-bottom: 1px solid var(--light-gray); font-size: 0.88rem; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: #f9f7f4; }
-          .badge {
-            display: inline-block;
-      padding: 0.25rem 0.7rem;
-      border-radius: 20px;
-      font-size: 0.78rem;
-      font-weight: 600;
-    }
+    .badge { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
     .badge-worship { background: #fff3cd; color: #856404; }
-          .badge-bible { background: #d1ecf1; color: #0c5460; }
-          .badge-outreach { background: #d4edda; color: #155724; }
-          .badge-special { background: #f8d7da; color: #721c24; }
-          .badge-youth { background: #e2d9f3; color: #432874; }
-          .badge-other { background: var(--light-gray); color: var(--charcoal); }
-          .action-btns { display: flex; gap: 0.5rem; }
-          .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: #aaa;
-      }
-          .empty-state span { font-size: 3rem; display: block; margin-bottom: 1rem; }
-
-          /* Modal */
-          .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-      }
-          .modal-overlay.active { display: flex; }
-          .modal {
-            background: white;
-            border-radius: 12px;
-      padding: 2rem;
-      width: 100%;
-      max-width: 560px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      max-height: 90vh;
-      overflow-y: auto;
-}
+    .badge-bible { background: #d1ecf1; color: #0c5460; }
+    .badge-outreach { background: #d4edda; color: #155724; }
+    .badge-special { background: #f8d7da; color: #721c24; }
+    .badge-youth { background: #e2d9f3; color: #432874; }
+    .badge-other { background: var(--light-gray); color: var(--charcoal); }
+    .action-btns { display: flex; gap: 0.5rem; }
+    .empty-state { text-align: center; padding: 3rem; color: #aaa; }
+    .empty-state span { font-size: 3rem; display: block; margin-bottom: 1rem; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: white; border-radius: 12px; padding: 2rem; width: 100%; max-width: 560px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
     .modal h2 { font-size: 1.4rem; color: var(--deep-blue); margin-bottom: 1.5rem; }
     .form-group { margin-bottom: 1.2rem; }
-    .form-group label {
-            display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--deep-blue);
-      margin-bottom: 0.4rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-}
-    .form-group input,
-          .form-group select,
-          .form-group textarea {
-            width: 100%;
-      padding: 0.8rem 1rem;
-      border: 2px solid var(--light-gray);
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 0.95rem;
-      transition: border-color 0.3s;
-}
-    .form-group input:focus,
-          .form-group select:focus,
-          .form-group textarea:focus {
-            outline: none;
-      border-color: var(--gold);
-}
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--deep-blue); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.8rem 1rem; border: 2px solid var(--light-gray); border-radius: 8px; font-family: inherit; font-size: 0.95rem; transition: border-color 0.3s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); }
     .form-group textarea { resize: vertical; min-height: 100px; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .modal-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; }
-
-    /* Export area */
-    .export-section {
-            background: white;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-}
+    .export-section { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
     .export-section h3 { color: var(--deep-blue); margin-bottom: 0.5rem; }
-    .export-section p { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
-    .code-block {
-            background: #1e2a38;
-      color: #a8d5a2;
-            padding: 1rem;
-      border-radius: 8px;
-      font-family: monospace;
-      font-size: 0.82rem;
-      white-space: pre;
-      overflow-x: auto;
-      max-height: 200px;
-      overflow-y: auto;
-      margin-bottom: 1rem;
-}
-    .notice {
-            background: #fff3cd;
-                  border-left: 4px solid var(--gold);
-      padding: 1rem 1.2rem;
-      border-radius: 0 8px 8px 0;
-      font-size: 0.88rem;
-      margin-bottom: 1.5rem;
-      color: #856404;
-    }
+    .export-section p { color: #666; font-size: 0.88rem; margin-bottom: 1rem; }
+    .code-block { background: #1e2a38; color: #a8d5a2; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.8rem; white-space: pre; overflow-x: auto; max-height: 200px; overflow-y: auto; margin-bottom: 1rem; }
+    .notice { background: #fff3cd; border-left: 4px solid var(--gold); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; font-size: 0.86rem; margin-bottom: 1.5rem; color: #856404; }
     .notice strong { display: block; margin-bottom: 0.3rem; }
-
-    @media (max-width: 600px) {
-      .form-row { grid-template-columns: 1fr; }
-      th:nth-child(3), td:nth-child(3) { display: none; }
-}
+    .change-pw-section { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-top: 2rem; margin-bottom: 2rem; }
+    .change-pw-section h3 { color: var(--deep-blue); margin-bottom: 0.5rem; }
+    .change-pw-section p { color: #666; font-size: 0.88rem; margin-bottom: 1rem; }
+    .pw-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; }
+    .pw-row .form-group { flex: 1; min-width: 200px; margin-bottom: 0; }
+    .hash-display { background: #f0f4f8; border-radius: 8px; padding: 0.8rem 1rem; font-size: 0.78rem; word-break: break-all; color: #555; margin-top: 0.8rem; display: none; }
+    .hash-display.visible { display: block; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } th:nth-child(3), td:nth-child(3) { display: none; } }
   </style>
-    </head>
-    <body>
+</head>
+<body>
 
-    <!-- LOGIN SCREEN -->
-    <div id="login-screen">
-      <div class="login-box">
-        <h1>&#9997; Events Admin</h1>
-    <p>Springfield Faith Assembly</p>
-    <input type="password" id="password-input" placeholder="Enter admin password" />
-        <div class="login-error" id="login-error">Incorrect password. Please try again.</div>
-        <button class="btn btn-primary" style="width:100%;padding:1rem;" onclick="login()">Sign In</button>
-        <p style="margin-top:1.5rem;font-size:0.8rem;color:#aaa;">Default password: <strong>faithag2026</strong></p>
-      </div>
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="logo">&#9997;</div>
+    <h1>Events Admin</h1>
+    <p class="subtitle">Springfield Faith Assembly</p>
+    <input type="password" id="password-input" placeholder="Enter admin password" autocomplete="current-password" />
+    <div class="login-error" id="login-error">Incorrect password. Please try again.</div>
+    <button class="btn btn-primary" style="width:100%;padding:1rem;" onclick="login()">Sign In</button>
+    <div class="login-hint">
+      <strong>&#128274; Secure Login</strong>
+      Your password is verified using SHA-256 &mdash; never stored in plaintext.
     </div>
+  </div>
+</div>
 
-    <!-- ADMIN PANEL -->
-    <div id="admin-panel">
-      <header>
-        <div>
-          <h1>&#128197; Events Manager</h1>
-      <p>Springfield Faith Assembly &#183; Admin Panel</p>
+<!-- ADMIN PANEL -->
+<div id="admin-panel">
+  <header>
+    <div>
+      <h1>&#128197; Events Manager</h1>
+      <p>Springfield Faith Assembly &middot; Admin Panel</p>
     </div>
     <button class="btn-logout" onclick="logout()">Sign Out</button>
-      </header>
-
-      <div class="container">
-
-        <div class="notice">
-          <strong>&#128161; How this works:</strong>
-          Add, edit, or delete events below. When done, click <strong>"Export events.json"</strong> at the bottom and copy the JSON into the <code>events.json</code> file in your GitHub repository. The website will automatically display the updated events.
-        </div>
-
-        <div class="toolbar">
-          <h2>Upcoming Events</h2>
-          <button class="btn btn-primary" onclick="openModal()">+ Add New Event</button>
+  </header>
+  <div class="container">
+    <div class="notice">
+      <strong>&#128161; How this works:</strong>
+      Add, edit, or delete events below. When done, click <strong>"Copy JSON"</strong> at the bottom and paste it into <code>events.json</code> in your GitHub repository. Netlify will redeploy and the website will show updated events.
     </div>
-
+    <div class="toolbar">
+      <h2>Upcoming Events</h2>
+      <button class="btn btn-primary" onclick="openModal()">+ Add New Event</button>
+    </div>
     <div class="events-table-wrapper">
       <table>
         <thead>
           <tr>
-            <th>Event Title</th>
-            <th>Date &amp; Time</th>
-                <th>Category</th>
-                <th>Description</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="events-tbody">
-              <!-- Events rendered here by JS -->
-            </tbody>
-          </table>
-        </div>
-
-        <div class="export-section">
-          <h3>&#128196; Export events.json</h3>
-          <p>Copy this JSON and paste it into the <strong>events.json</strong> file in your GitHub repository to update the website.</p>
+            <th>Event Title</th><th>Date &amp; Time</th><th>Category</th><th>Description</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="events-tbody"></tbody>
+      </table>
+    </div>
+    <div class="export-section">
+      <h3>&#128196; Export events.json</h3>
+      <p>Copy this JSON and paste it into <strong>events.json</strong> in your GitHub repo to update the website.</p>
       <div class="code-block" id="json-output"></div>
       <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-            <button class="btn btn-success" onclick="copyJSON()">&#128203; Copy JSON</button>
+        <button class="btn btn-success" id="copy-btn" onclick="copyJSON()">&#128203; Copy JSON</button>
         <a id="download-link" class="btn btn-secondary" download="events.json">&#8595; Download events.json</a>
-          </div>
-        </div>
-
       </div>
     </div>
+    <div class="change-pw-section">
+      <h3>&#128274; Change Admin Password</h3>
+      <p>Enter a new password, generate its hash, then replace <code>STORED_HASH</code> in <code>admin.html</code> on GitHub with the new hash value.</p>
+      <div class="pw-row">
+        <div class="form-group">
+          <label>New Password</label>
+          <input type="password" id="new-pw" placeholder="Enter new password (min 8 chars)" />
+        </div>
+        <button class="btn btn-primary" onclick="generateHash()">Generate Hash</button>
+      </div>
+      <div class="hash-display" id="hash-display"></div>
+    </div>
+  </div>
+</div>
 
-    <!-- EVENT MODAL -->
-    <div class="modal-overlay" id="modal-overlay">
-      <div class="modal">
-        <h2 id="modal-title">Add New Event</h2>
+<!-- EVENT MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h2 id="modal-title">Add New Event</h2>
+    <div class="form-group"><label>Event Title *</label><input type="text" id="f-title" placeholder="e.g. Easter Sunday Service" /></div>
+    <div class="form-row">
+      <div class="form-group"><label>Date *</label><input type="date" id="f-date" /></div>
+      <div class="form-group"><label>Time *</label><input type="text" id="f-time" placeholder="e.g. 10:30 AM" /></div>
+    </div>
     <div class="form-group">
-      <label>Event Title *</label>
-      <input type="text" id="f-title" placeholder="e.g. Easter Sunday Service" />
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Date *</label>
-            <input type="date" id="f-date" />
-          </div>
-          <div class="form-group">
-            <label>Time *</label>
-            <input type="text" id="f-time" placeholder="e.g. 10:30 AM" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Category</label>
-          <select id="f-category">
-            <option value="Worship">Worship</option>
-            <option value="Bible Study">Bible Study</option>
-            <option value="Outreach">Outreach</option>
-            <option value="Youth">Youth</option>
-            <option value="Special">Special Event</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Description</label>
-          <textarea id="f-description" placeholder="Brief description of the event..."></textarea>
-        </div>
-        <div class="modal-actions">
-          <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-          <button class="btn btn-primary" onclick="saveEvent()">Save Event</button>
-        </div>
-      </div>
+      <label>Category</label>
+      <select id="f-category">
+        <option value="Worship">Worship</option><option value="Bible Study">Bible Study</option>
+        <option value="Outreach">Outreach</option><option value="Youth">Youth</option>
+        <option value="Special">Special Event</option><option value="Other">Other</option>
+      </select>
     </div>
+    <div class="form-group"><label>Description</label><textarea id="f-description" placeholder="Brief description of the event..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEvent()">Save Event</button>
+    </div>
+  </div>
+</div>
 
-    <script>
-      // ============================================================
-      // CONFIG - Change this password!
-      // ============================================================
-      const ADMIN_PASSWORD = 'faithag2026';
+<script>
+  // ============================================================
+  // STORED HASH
+  // This is the SHA-256 hash of the admin password.
+  // DEFAULT: 'faithag2026'  ->  hash below
+  // To change: use the "Change Admin Password" section after login.
+  // ============================================================
+  const STORED_HASH = '1ef8e607eaee9385b078c85dd968696d4b6ea7b03a397ea46f3a1c5c852c6103';
 
-  // ============================================================
-  // State
-  // ============================================================
-  let events = [];
-  let editingId = null;
-  let nextId = 1;
+  async function sha256(msg) {
+    const buf = new TextEncoder().encode(msg);
+    const hash = await crypto.subtle.digest('SHA-256', buf);
+    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
 
-  // ============================================================
-  // Auth
-  // ============================================================
-  function login() {
-        const pw = document.getElementById('password-input').value;
-    if (pw === ADMIN_PASSWORD) {
+  async function login() {
+    const pw = document.getElementById('password-input').value;
+    if (!pw) return;
+    const hash = await sha256(pw);
+    if (hash === STORED_HASH) {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('admin-panel').style.display = 'block';
+      document.getElementById('login-error').style.display = 'none';
       loadEvents();
     } else {
       document.getElementById('login-error').style.display = 'block';
+      document.getElementById('password-input').value = '';
     }
   }
 
   function logout() {
-        document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('admin-panel').style.display = 'none';
     document.getElementById('password-input').value = '';
   }
 
-  document.getElementById('password-input').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') login();
-  });
+  document.getElementById('password-input').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
 
-  // ============================================================
-  // Load events from events.json (or localStorage fallback)
-  // ============================================================
+  let events = [], editingId = null, nextId = 1;
+
   async function loadEvents() {
-    // Try localStorage first (so edits persist across sessions)
     const stored = localStorage.getItem('faithag_events');
     if (stored) {
-      try {
-        events = JSON.parse(stored);
-        nextId = Math.max(...events.map(e => e.id), 0) + 1;
-        render();
-        return;
-      } catch(e) {}
+      try { events = JSON.parse(stored); nextId = events.length ? Math.max(...events.map(e=>e.id))+1 : 1; render(); return; } catch(e) {}
     }
-    // Fallback: fetch from events.json
     try {
-      const res = await fetch('events.json?v=' + Date.now());
+      const res = await fetch('./events.json');
       events = await res.json();
-      nextId = Math.max(...events.map(e => e.id), 0) + 1;
+      nextId = events.length ? Math.max(...events.map(e=>e.id))+1 : 1;
       saveToStorage();
-    } catch(e) {
-      events = [];
-    }
+    } catch(e) { events = []; }
     render();
-    }
-
-  function saveToStorage() {
-        localStorage.setItem('faithag_events', JSON.stringify(events));
   }
 
-  // ============================================================
-  // Render
-  // ============================================================
+  function saveToStorage() { localStorage.setItem('faithag_events', JSON.stringify(events)); }
+
   function render() {
-        const tbody = document.getElementById('events-tbody');
-    if (events.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><span>&#128197;</span>No events yet. Click "Add New Event" to get started.</div></td></tr>';
+    const tbody = document.getElementById('events-tbody');
+    if (!events.length) {
+      tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><span>&#128197;</span>No events yet. Click "+ Add New Event" to get started.</div></td></tr>';
     } else {
-      // Sort by date
-      const sorted = [...events].sort((a, b) => new Date(a.date) - new Date(b.date));
-      tbody.innerHTML = sorted.map(ev => `
-                <tr>
-                  <td><strong>${escHtml(ev.title)}</strong></td>
-                  <td>${formatDate(ev.date)}<br><small style="color:#888">${escHtml(ev.time)}</small></td>
-                  <td><span class="badge badge-${getBadgeClass(ev.category)}">${escHtml(ev.category)}</span></td>
-                  <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(ev.description || '')}</td>
-                  <td>
-                    <div class="action-btns">
-                      <button class="btn btn-secondary" style="padding:0.4rem 0.8rem;font-size:0.8rem" onclick="editEvent(${ev.id})">&#9998; Edit</button>
-              <button class="btn btn-danger" style="padding:0.4rem 0.8rem;font-size:0.8rem" onclick="deleteEvent(${ev.id})">&#128465; Delete</button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
-        }
-            updateExport();
+      const sorted = [...events].sort((a,b) => new Date(a.date)-new Date(b.date));
+      tbody.innerHTML = sorted.map(ev => `<tr>
+        <td><strong>${esc(ev.title)}</strong></td>
+        <td>${fmtDate(ev.date)}<br><small style="color:#888">${esc(ev.time)}</small></td>
+        <td><span class="badge badge-${bc(ev.category)}">${esc(ev.category)}</span></td>
+        <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(ev.description||'')}</td>
+        <td><div class="action-btns">
+          <button class="btn btn-secondary" style="padding:.35rem .7rem;font-size:.8rem" onclick="editEvent(${ev.id})">&#9998; Edit</button>
+          <button class="btn btn-danger" style="padding:.35rem .7rem;font-size:.8rem" onclick="deleteEvent(${ev.id})">&#128465;</button>
+        </div></td>
+      </tr>`).join('');
+    }
+    updateExport();
   }
 
-  function getBadgeClass(cat) {
-        const map = { 'Worship': 'worship', 'Bible Study': 'bible', 'Outreach': 'outreach', 'Special': 'special', 'Youth': 'youth' };
-    return map[cat] || 'other';
-  }
+  function bc(cat) { return {'Worship':'worship','Bible Study':'bible','Outreach':'outreach','Special':'special','Youth':'youth'}[cat]||'other'; }
+  function fmtDate(d) { return d ? new Date(d+'T00:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : ''; }
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  function formatDate(dateStr) {
-        if (!dateStr) return '';
-              const d = new Date(dateStr + 'T00:00:00');
-    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-}
-
-  function escHtml(str) {
-    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-  // ============================================================
-  // Modal
-  // ============================================================
   function openModal(id) {
     editingId = id || null;
     document.getElementById('modal-title').textContent = id ? 'Edit Event' : 'Add New Event';
     if (id) {
-      const ev = events.find(e => e.id === id);
-      document.getElementById('f-title').value = ev.title;
-      document.getElementById('f-date').value = ev.date;
-      document.getElementById('f-time').value = ev.time;
-      document.getElementById('f-category').value = ev.category;
-      document.getElementById('f-description').value = ev.description || '';
-} else {
-      document.getElementById('f-title').value = '';
-      document.getElementById('f-date').value = '';
-      document.getElementById('f-time').value = '';
-      document.getElementById('f-category').value = 'Worship';
-      document.getElementById('f-description').value = '';
-}
+      const ev = events.find(e=>e.id===id);
+      document.getElementById('f-title').value=ev.title;
+      document.getElementById('f-date').value=ev.date;
+      document.getElementById('f-time').value=ev.time;
+      document.getElementById('f-category').value=ev.category;
+      document.getElementById('f-description').value=ev.description||'';
+    } else {
+      ['f-title','f-date','f-time','f-description'].forEach(i=>document.getElementById(i).value='');
+      document.getElementById('f-category').value='Worship';
+    }
     document.getElementById('modal-overlay').classList.add('active');
-}
+    setTimeout(()=>document.getElementById('f-title').focus(),80);
+  }
 
-  function closeModal() {
-    document.getElementById('modal-overlay').classList.remove('active');
-    editingId = null;
-}
+  function closeModal() { document.getElementById('modal-overlay').classList.remove('active'); editingId=null; }
+  document.getElementById('modal-overlay').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeModal(); });
 
-  document.getElementById('modal-overlay').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-});
-
-  // ============================================================
-  // CRUD
-  // ============================================================
   function saveEvent() {
-    const title = document.getElementById('f-title').value.trim();
-    const date = document.getElementById('f-date').value;
-    const time = document.getElementById('f-time').value.trim();
-    const category = document.getElementById('f-category').value;
-    const description = document.getElementById('f-description').value.trim();
+    const title=document.getElementById('f-title').value.trim();
+    const date=document.getElementById('f-date').value;
+    const time=document.getElementById('f-time').value.trim();
+    const category=document.getElementById('f-category').value;
+    const description=document.getElementById('f-description').value.trim();
+    if(!title||!date||!time){alert('Title, Date, and Time are required.');return;}
+    if(editingId){const i=events.findIndex(e=>e.id===editingId);events[i]={id:editingId,title,date,time,category,description};}
+    else{events.push({id:nextId++,title,date,time,category,description});}
+    saveToStorage();render();closeModal();
+  }
 
-    if (!title || !date || !time) {
-      alert('Please fill in the required fields: Title, Date, and Time.');
-      return;
-}
-
-    if (editingId) {
-      const idx = events.findIndex(e => e.id === editingId);
-      events[idx] = { id: editingId, title, date, time, category, description };
-} else {
-      events.push({ id: nextId++, title, date, time, category, description });
-}
-
-    saveToStorage();
-    render();
-    closeModal();
-}
-
-  function editEvent(id) {
-    openModal(id);
-}
+  function editEvent(id){openModal(id);}
 
   function deleteEvent(id) {
-    const ev = events.find(e => e.id === id);
-    if (confirm('Delete "' + ev.title + '"?')) {
-      events = events.filter(e => e.id !== id);
-      saveToStorage();
-      render();
-}
-}
+    const ev=events.find(e=>e.id===id);
+    if(!ev)return;
+    if(confirm('Delete "'+ev.title+'"? This cannot be undone.')){
+      events=events.filter(e=>e.id!==id);saveToStorage();render();
+    }
+  }
 
-  // ============================================================
-  // Export
-  // ============================================================
   function updateExport() {
-    const sorted = [...events].sort((a, b) => new Date(a.date) - new Date(b.date));
-    const json = JSON.stringify(sorted, null, 2);
-    document.getElementById('json-output').textContent = json;
-    const blob = new Blob([json], {type: 'application/json'});
-    document.getElementById('download-link').href = URL.createObjectURL(blob);
-                                  }
+    const sorted=[...events].sort((a,b)=>new Date(a.date)-new Date(b.date));
+    const json=JSON.stringify(sorted,null,2);
+    document.getElementById('json-output').textContent=json;
+    const blob=new Blob([json],{type:'application/json'});
+    document.getElementById('download-link').href=URL.createObjectURL(blob);
+  }
 
   function copyJSON() {
-    const sorted = [...events].sort((a, b) => new Date(a.date) - new Date(b.date));
-    const json = JSON.stringify(sorted, null, 2);
-    navigator.clipboard.writeText(json).then(() => {
-      const btn = event.target;
-      btn.textContent = '✓ Copied!';
-      setTimeout(() => { btn.textContent = '📋 Copy JSON'; }, 2000);
-});
-}
+    const sorted=[...events].sort((a,b)=>new Date(a.date)-new Date(b.date));
+    navigator.clipboard.writeText(JSON.stringify(sorted,null,2)).then(()=>{
+      const btn=document.getElementById('copy-btn');
+      btn.textContent='✓ Copied!';
+      setTimeout(()=>{btn.textContent='📋 Copy JSON';},2500);
+    });
+  }
+
+  async function generateHash() {
+    const pw=document.getElementById('new-pw').value;
+    if(!pw||pw.length<6){alert('Please enter at least 6 characters.');return;}
+    const hash=await sha256(pw);
+    const d=document.getElementById('hash-display');
+    d.className='hash-display visible';
+    d.innerHTML='<strong style="color:#1a3a52">Your new STORED_HASH value (copy this):</strong><br><br>'
+      +'<code style="background:#e8f4fd;padding:4px 8px;border-radius:4px;word-break:break-all;font-size:0.85rem">'+hash+'</code><br><br>'
+      +'In GitHub, open <strong>admin.html</strong>, find <code>const STORED_HASH =</code> on line 1, and replace the long string with the code above. Then commit the change.';
+  }
 </script>
 </body>
 </html>
