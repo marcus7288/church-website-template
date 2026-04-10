@@ -1,5 +1,13 @@
 [
   {
+    "id": 4,
+    "title": "Easter Sunday Service",
+    "date": "2026-04-05",
+    "time": "10:30 am",
+    "category": "Special",
+    "description": "Join us to celebrate the resurrection of our Jesus from the dead!"
+  },
+  {
     "id": 1,
     "title": "Sunday Morning Worship",
     "date": "2026-04-12",
