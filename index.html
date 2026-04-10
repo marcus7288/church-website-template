@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Springfield Faith Assembly | Springfield, Missouri</title>
+    <title id="cfg-page-title">Your Church Name</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -627,7 +627,7 @@
         <div class="nav-inner">
             <a href="#home" class="nav-logo">
                 <img src="logo 2.png" alt="SFA Logo">
-                <span>Springfield Faith Assembly</span>
+                <span id="cfg-nav-name">Your Church Name</span>
             </a>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
@@ -659,9 +659,9 @@
         <div class="hero-bg-overlay"></div>
         <div class="hero-content fade-in">
             <img src="logo 2.png" alt="Springfield Faith Assembly" class="hero-logo">
-            <h1>Springfield Faith<br>Assembly</h1>
+            <h1 id="cfg-hero-title">Your Church<br>Name</h1>
             <div class="hero-divider"></div>
-            <p class="hero-tagline">Love &nbsp;&bull;&nbsp; Grow &nbsp;&bull;&nbsp; Share</p>
+            <p class="hero-tagline"><span id="cfg-tagline">Love &bull; Grow &bull; Share</span></p>
             <div class="hero-cta">
                 <a href="#services" class="btn btn-primary"><i class="fa-regular fa-clock"></i> Service Times</a>
                 <a href="#plan-visit" class="btn btn-secondary"><i class="fa-solid fa-location-dot"></i> Plan Your Visit</a>
@@ -670,20 +670,16 @@
         <div class="scroll-arrow"><i class="fa-solid fa-chevron-down"></i></div>
         <div class="hero-service-strip">
             <div class="hero-strip-item">
-                <div class="strip-label">Sunday Worship</div>
-                <div class="strip-value">10:30 AM</div>
+                <div class="strip-label" id="cfg-s1-day">Sunday Worship</div><div class="strip-value" id="cfg-s1-time">10:30 AM</div>
             </div>
             <div class="hero-strip-item">
-                <div class="strip-label">Wednesday Night</div>
-                <div class="strip-value">7:00 PM</div>
+                <div class="strip-label" id="cfg-s2-day">Wednesday Night</div><div class="strip-value" id="cfg-s2-time">7:00 PM</div>
             </div>
             <div class="hero-strip-item">
-                <div class="strip-label">Location</div>
-                <div class="strip-value">3001 W Division St</div>
+                <div class="strip-label">Location</div><div class="strip-value" id="cfg-addr-short">123 Main Street</div>
             </div>
             <div class="hero-strip-item">
-                <div class="strip-label">Springfield, MO</div>
-                <div class="strip-value">65802</div>
+                <div class="strip-label" id="cfg-city-state">Your City, ST</div><div class="strip-value" id="cfg-zip">00000</div>
             </div>
         </div>
     </section>
@@ -708,7 +704,7 @@
                         <div class="divider-line"></div>
                         <p class="section-subtitle" style="margin-top:16px;">Where faith grows, hope flourishes, and love transforms lives.</p>
                     </div>
-                    <p>Welcome to Springfield Faith Assembly! No matter who you are or where you have been, you are welcome here.</p>
+                    <p>Welcome to <span id="cfg-about-name">Your Church Name</span>! No matter who you are or where you have been, you are welcome here.</p>
                     <p>Life can be messy, and we are all imperfect people — but we are pursuing a transforming relationship with God. We believe in community, intentional growth, and serving those around us. We are excited about what God is doing in our church, and we would love for you to be a part of it.</p>
                     <div class="about-values">
                         <div class="value-item"><div class="value-icon"><i class="fa-solid fa-heart"></i></div><span class="value-label">Love</span></div>
@@ -767,14 +763,14 @@
                         <div class="visit-card-icon"><i class="fa-solid fa-location-dot"></i></div>
                         <div class="visit-card-text">
                             <h4>Where We Are</h4>
-                            <p>3001 W Division Street<br>Springfield, Missouri 65802</p>
+                            <p id="cfg-addr-full">123 Main Street<br>Your City, State 00000</p>
                         </div>
                     </div>
                     <div class="visit-card fade-in">
                         <div class="visit-card-icon"><i class="fa-regular fa-clock"></i></div>
                         <div class="visit-card-text">
                             <h4>Service Times</h4>
-                            <p>Sunday: 10:30 AM &nbsp;&bull;&nbsp; Wednesday: 7:00 PM</p>
+                            <p id="cfg-service-times">Sunday: 10:30 AM &bull; Wednesday: 7:00 PM</p>
                         </div>
                     </div>
                     <div class="visit-card fade-in">
@@ -794,7 +790,7 @@
                 </div>
                 <div class="visit-map fade-in-right">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.3!2d-93.3207!3d37.2153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87cf6228b9aaaaab%3A0x1!2s3001+W+Division+St%2C+Springfield%2C+MO+65802!5e0!3m2!1sen!2sus!4v1700000000000"
+                        id="cfg-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.3!2d-93.3207!3d37.2153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87cf6228b9aaaaab%3A0x1!2s3001+W+Division+St%2C+Springfield%2C+MO+65802!5e0!3m2!1sen!2sus!4v1700000000000"
                         allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
                         title="Springfield Faith Assembly Map">
                     </iframe>
@@ -886,7 +882,7 @@
                     <div class="sermon-date" id="sermon-date"></div>
                     <p class="sermon-desc" id="sermon-desc">Watch our latest message from Springfield Faith Assembly.</p>
                     <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                        <a href="https://www.youtube.com/@springfieldfaithassembly" target="_blank" class="btn btn-primary"><i class="fa-brands fa-youtube"></i> Watch More</a>
+                        <a id="cfg-yt-link" href="https://www.youtube.com/@yourchannel" target="_blank" class="btn btn-primary"><i class="fa-brands fa-youtube"></i> Watch More</a>
                         <a href="#contact" class="btn btn-secondary">Connect With Us</a>
                     </div>
                 </div>
@@ -903,7 +899,7 @@
                 <p>Your generosity makes a difference in Springfield and beyond. Every gift supports worship, outreach, and community ministry.</p>
             </div>
             <div class="give-cta fade-in-right">
-                <a href="https://tithe.ly/give" target="_blank" class="btn btn-primary" style="font-size:1rem;padding:16px 40px;"><i class="fa-solid fa-heart"></i> Give Now</a>
+                <a id="cfg-give-btn" href="https://tithe.ly/give" target="_blank" class="btn btn-primary" style="font-size:1rem;padding:16px 40px;"><i class="fa-solid fa-heart"></i> Give Now</a>
                 <a href="#contact" class="btn btn-secondary">Questions? Contact Us</a>
             </div>
         </div>
@@ -938,14 +934,14 @@
                             <div class="contact-info-icon"><i class="fa-solid fa-envelope"></i></div>
                             <div class="contact-info-text">
                                 <h4>Email Us</h4>
-                                <a href="mailto:info@faithagspringfield.com">info@faithagspringfield.com</a>
+                                <a id="cfg-email" href="mailto:info@youremail.com">info@youremail.com</a>
                             </div>
                         </div>
                         <div class="contact-info-item">
                             <div class="contact-info-icon"><i class="fa-solid fa-phone"></i></div>
                             <div class="contact-info-text">
                                 <h4>Phone</h4>
-                                <a href="tel:+14175550000">(417) 555-0000</a>
+                                <a id="cfg-phone" href="tel:+10000000000">(000) 000-0000</a>
                             </div>
                         </div>
                     </div>
@@ -988,9 +984,9 @@
                 <img src="logo 2.png" alt="Springfield Faith Assembly">
                 <p>A Spirit-filled community in the heart of Springfield, Missouri. Everyone is welcome at the table.</p>
                 <div class="footer-social">
-                    <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="https://youtube.com" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    <a id="cfg-fb" href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a id="cfg-ig" href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a id="cfg-yt" href="https://youtube.com" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
                 </div>
             </div>
             <div class="footer-col">
@@ -1016,13 +1012,13 @@
             </div>
             <div class="footer-col">
                 <h4>Contact</h4>
-                <div class="footer-contact-item"><i class="fa-solid fa-location-dot"></i><span>3001 W Division St<br>Springfield, MO 65802</span></div>
+                <div class="footer-contact-item"><i class="fa-solid fa-location-dot"></i><span id="cfg-footer-addr">123 Main St<br>Your City, MO 00000</span></div>
                 <div class="footer-contact-item"><i class="fa-regular fa-clock"></i><span>Sun 10:30 AM &bull; Wed 7:00 PM</span></div>
-                <div class="footer-contact-item"><i class="fa-solid fa-envelope"></i><span>info@faithagspringfield.com</span></div>
+                <div class="footer-contact-item"><i class="fa-solid fa-envelope"></i><span id="cfg-footer-email">info@youremail.com</span></div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 Springfield Faith Assembly. All rights reserved.</p>
+            <p>&copy; <span id="cfg-copy-year">2026</span> <span id="cfg-copy-name">Your Church Name</span>. All rights reserved.</p>
             <a href="/admin.html">Staff Login</a>
         </div>
     </footer>
@@ -1051,6 +1047,94 @@
     function closeMobileMenu() {
         document.getElementById('mobile-menu').classList.remove('open');
     }
+
+    // ===== CONFIG =====
+    function applyConfig(c) {
+        const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
+        const setHref = (id, val) => { const el = document.getElementById(id); if (el && val) el.href = val; };
+        const setHTML = (id, val) => { const el = document.getElementById(id); if (el && val) el.innerHTML = val; };
+
+        // Page title
+        document.title = (c.churchName || 'Church') + (c.city ? ' | ' + c.city + ', ' + (c.state||'') : '');
+
+        // Nav & hero
+        set('cfg-nav-name', c.churchName);
+        setHTML('cfg-hero-title', (c.churchName||'Your Church').replace(' ', '<br>'));
+        set('cfg-tagline', c.tagline);
+        set('cfg-about-name', c.churchName);
+
+        // Services strip
+        if (c.services && c.services[0]) {
+            set('cfg-s1-day', c.services[0].day + ' Worship');
+            set('cfg-s1-time', c.services[0].time);
+        }
+        if (c.services && c.services[1]) {
+            set('cfg-s2-day', c.services[1].day + ' Night');
+            set('cfg-s2-time', c.services[1].time);
+        }
+
+        // Address
+        set('cfg-addr-short', c.address);
+        set('cfg-city-state', (c.city||'') + ', ' + (c.state||''));
+        set('cfg-addr-full', (c.address||'') + '\n' + (c.addressLine2||''));
+        const fullEl = document.getElementById('cfg-addr-full');
+        if (fullEl && c.address) fullEl.innerHTML = c.address + '<br>' + (c.addressLine2||'');
+        set('cfg-footer-addr', (c.address||'') + '\n' + (c.city||'') + ', ' + (c.state||''));
+        const footerAddrEl = document.getElementById('cfg-footer-addr');
+        if (footerAddrEl && c.address) footerAddrEl.innerHTML = c.address + '<br>' + (c.city||'') + ', ' + (c.state||'');
+
+        // Service times string
+        if (c.services) {
+            const times = c.services.map(s => s.day + ': ' + s.time).join(' &bull; ');
+            const el = document.getElementById('cfg-service-times');
+            if (el) el.innerHTML = times;
+        }
+
+        // Map
+        if (c.maps && c.maps.embedUrl) {
+            const map = document.getElementById('cfg-map');
+            if (map) map.src = c.maps.embedUrl;
+        }
+
+        // Give
+        if (c.giving && c.giving.url) {
+            setHref('cfg-give-btn', c.giving.url);
+            const giveEl = document.getElementById('cfg-give-btn');
+            if (giveEl && c.giving.label) giveEl.querySelector('i') && (giveEl.lastChild.textContent = ' ' + c.giving.label);
+        }
+
+        // Contact
+        if (c.email) {
+            const emailEl = document.getElementById('cfg-email');
+            if (emailEl) { emailEl.href = 'mailto:' + c.email; emailEl.textContent = c.email; }
+            const fEmailEl = document.getElementById('cfg-footer-email');
+            if (fEmailEl) fEmailEl.textContent = c.email;
+        }
+        if (c.phone) {
+            const phoneEl = document.getElementById('cfg-phone');
+            if (phoneEl) { phoneEl.href = 'tel:' + c.phone.replace(/\D/g,''); phoneEl.textContent = c.phone; }
+        }
+
+        // Social
+        if (c.social) {
+            setHref('cfg-fb', c.social.facebook);
+            setHref('cfg-ig', c.social.instagram);
+            setHref('cfg-yt', c.social.youtube);
+            setHref('cfg-yt-link', c.social.youtube);
+        }
+
+        // Footer copyright
+        set('cfg-copy-name', c.churchName);
+        set('cfg-copy-year', new Date().getFullYear().toString());
+    }
+
+    function loadConfig() {
+        fetch('./config.json?v=' + Date.now())
+            .then(r => r.json())
+            .then(c => applyConfig(c))
+            .catch(() => console.warn('config.json not found - using default content'));
+    }
+    loadConfig();
 
     // ===== ANNOUNCEMENTS =====
     function loadAnnouncement() {
