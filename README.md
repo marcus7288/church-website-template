@@ -3,7 +3,7 @@
 > A free, modern, fully editable church website — no WordPress, no backend, no monthly fees.
 > Built with plain HTML/CSS/JS, deployed on Netlify, managed through a built-in admin panel.
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/marcus7288/faithagspringfield)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/marcus7288/church-website-template)
 
 ---
 
