@@ -1,0 +1,26 @@
+[
+    {
+          "id": 1,
+          "title": "Sunday Morning Worship",
+          "date": "2026-04-12",
+          "time": "10:30 AM",
+          "description": "Join us for uplifting worship and powerful biblical teaching for all ages.",
+          "category": "Worship"
+    },
+    {
+          "id": 2,
+          "title": "Wednesday Night Family Night",
+          "date": "2026-04-15",
+          "time": "7:00 PM",
+          "description": "In-depth Bible study, prayer, and fellowship. Youth and children's programs available.",
+          "category": "Bible Study"
+    },
+    {
+          "id": 3,
+          "title": "Community Outreach Day",
+          "date": "2026-04-18",
+          "time": "9:00 AM",
+          "description": "Serving our neighbors in Springfield together. Come ready to make a difference!",
+          "category": "Outreach"
+    }
+]
