@@ -208,6 +208,10 @@ a{text-decoration:none;color:inherit}
             </div>
             <div class="sidebar-section" style="margin-top:16px">
                 <div class="sidebar-section-label">Settings</div>
+                <button class="sidebar-link" onclick="switchTab('config', this)">
+                    <i class="fa-solid fa-gear"></i> Church Settings
+                    <span class="unsaved-dot" id="config-dot"></span>
+                </button>
                 <button class="sidebar-link" onclick="switchTab('password', this)">
                     <i class="fa-solid fa-key"></i> Change Password
                 </button>
@@ -222,6 +226,7 @@ a{text-decoration:none;color:inherit}
                 <div class="stat-card"><i class="fa-regular fa-calendar"></i><div class="stat-num" id="stat-events">0</div><div class="stat-label">Upcoming Events</div></div>
                 <div class="stat-card"><i class="fa-solid fa-bullhorn"></i><div class="stat-num" id="stat-banner">OFF</div><div class="stat-label">Banner Status</div></div>
                 <div class="stat-card"><i class="fa-brands fa-youtube"></i><div class="stat-num" id="stat-sermons">0</div><div class="stat-label">Sermons</div></div>
+                <div class="stat-card"><i class="fa-solid fa-gear"></i><div class="stat-num" id="stat-config" style="font-size:1rem;margin-top:4px">Not Set</div><div class="stat-label">Church Name</div></div>
             </div>
 
             <!-- EVENTS TAB -->
@@ -294,6 +299,51 @@ a{text-decoration:none;color:inherit}
                 </div>
             </div>
 
+
+            <!-- CONFIG TAB -->
+            <div id="tab-config" class="tab-pane">
+                <div class="content-card">
+                    <div class="card-header">
+                        <div><h2>Church Settings</h2><p>Update your church's name, address, contact info, and more.</p></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group"><label>Church Name</label><input type="text" id="cfg-name" placeholder="Springfield Faith Assembly" oninput="configChanged()"></div>
+                            <div class="form-group"><label>Short Name / Initials</label><input type="text" id="cfg-short" placeholder="SFA" oninput="configChanged()"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Tagline</label><input type="text" id="cfg-tagline" placeholder="Love | Grow | Share" oninput="configChanged()"></div>
+                            <div class="form-group"><label>Denomination</label><input type="text" id="cfg-denom" placeholder="Assembly of God" oninput="configChanged()"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Street Address</label><input type="text" id="cfg-address" placeholder="123 Main Street" oninput="configChanged()"></div>
+                            <div class="form-group"><label>City, State ZIP</label><input type="text" id="cfg-address2" placeholder="Springfield, MO 65802" oninput="configChanged()"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Phone</label><input type="text" id="cfg-phone" placeholder="(417) 555-0000" oninput="configChanged()"></div>
+                            <div class="form-group"><label>Email</label><input type="email" id="cfg-email" placeholder="info@youremail.com" oninput="configChanged()"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Facebook URL</label><input type="url" id="cfg-fb" placeholder="https://facebook.com/yourchurch" oninput="configChanged()"></div>
+                            <div class="form-group"><label>Instagram URL</label><input type="url" id="cfg-ig" placeholder="https://instagram.com/yourchurch" oninput="configChanged()"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>YouTube URL</label><input type="url" id="cfg-yt" placeholder="https://youtube.com/@yourchannel" oninput="configChanged()"></div>
+                            <div class="form-group"><label>Online Giving URL</label><input type="url" id="cfg-give" placeholder="https://tithe.ly/give" oninput="configChanged()"></div>
+                        </div>
+                        <hr style="border:none;border-top:1px solid #F0F2F5;margin:8px 0 16px">
+                        <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#A0ADB8;margin-bottom:12px">GitHub Publishing Settings</p>
+                        <div class="form-row">
+                            <div class="form-group"><label>GitHub Username</label><input type="text" id="cfg-gh-owner" placeholder="your-github-username" oninput="configChanged()"></div>
+                            <div class="form-group"><label>Repository Name</label><input type="text" id="cfg-gh-repo" placeholder="your-repo-name" oninput="configChanged()"></div>
+                        </div>
+                        <div style="padding:14px;background:#FEF9E7;border-radius:8px;font-size:0.82rem;color:#7D6608;border-left:4px solid #F39C12;margin-top:8px">
+                            <i class="fa-solid fa-triangle-exclamation"></i> After changing GitHub Username or Repository Name, reload the admin panel for the new settings to take effect.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- PASSWORD TAB -->
             <div id="tab-password" class="tab-pane">
                 <div class="content-card">
@@ -343,9 +393,10 @@ a{text-decoration:none;color:inherit}
 <script>
 // ===== CONFIG =====
 const STORED_HASH = '1ef8e607eaee9385b078c85dd968696d4b6ea7b03a397ea46f3a1c5c852c6103';
-const GH_OWNER = 'marcus7288';
-const GH_REPO = 'faithagspringfield';
-const GH_BRANCH = 'main';
+// GitHub config - loaded from config.json at runtime
+let GH_OWNER = 'YOUR_GITHUB_USERNAME';
+let GH_REPO = 'YOUR_REPO_NAME';
+let GH_BRANCH = 'main';
 
 // ===== SHA256 =====
 async function sha256(msg) {
@@ -403,7 +454,7 @@ function markUnsaved(type) {
     document.getElementById('unsaved-dot').classList.add('show');
 }
 function markAllSaved() {
-    unsavedEvents = false; unsavedAnnouncement = false; unsavedSermons = false;
+    unsavedEvents = false; unsavedAnnouncement = false; unsavedSermons = false; unsavedConfig = false;
     document.querySelectorAll('.unsaved-dot').forEach(d => d.classList.remove('show'));
 }
 
@@ -575,6 +626,85 @@ function updateStats() {
     document.getElementById('stat-sermons').textContent = sermonsData.length;
 }
 
+
+// ===== CONFIG MANAGEMENT =====
+let configData = {};
+let unsavedConfig = false;
+
+function loadConfigData() {
+    fetch('./config.json?v=' + Date.now())
+        .then(r => r.json())
+        .then(c => {
+            configData = c;
+            // Apply GH settings from config
+            if (c.github) {
+                if (c.github.owner) GH_OWNER = c.github.owner;
+                if (c.github.repo) GH_REPO = c.github.repo;
+                if (c.github.branch) GH_BRANCH = c.github.branch;
+            }
+            // Populate form fields
+            const f = (id, val) => { const el = document.getElementById(id); if (el && val !== undefined) el.value = val || ''; };
+            f('cfg-name', c.churchName);
+            f('cfg-short', c.churchShortName);
+            f('cfg-tagline', c.tagline);
+            f('cfg-denom', c.denomination);
+            f('cfg-address', c.address);
+            f('cfg-address2', c.addressLine2);
+            f('cfg-phone', c.phone);
+            f('cfg-email', c.email);
+            f('cfg-fb', c.social && c.social.facebook);
+            f('cfg-ig', c.social && c.social.instagram);
+            f('cfg-yt', c.social && c.social.youtube);
+            f('cfg-give', c.giving && c.giving.url);
+            f('cfg-gh-owner', c.github && c.github.owner);
+            f('cfg-gh-repo', c.github && c.github.repo);
+            // Update stat
+            const statEl = document.getElementById('stat-config');
+            if (statEl) statEl.textContent = c.churchName || 'Not Set';
+        })
+        .catch(() => {});
+}
+
+function configChanged() {
+    unsavedConfig = true;
+    document.getElementById('config-dot').classList.add('show');
+    document.getElementById('unsaved-dot').classList.add('show');
+    // Update stat preview
+    const nameEl = document.getElementById('cfg-name');
+    const statEl = document.getElementById('stat-config');
+    if (statEl && nameEl) statEl.textContent = nameEl.value || 'Not Set';
+}
+
+function getConfigData() {
+    return {
+        churchName: document.getElementById('cfg-name').value,
+        churchShortName: document.getElementById('cfg-short').value,
+        tagline: document.getElementById('cfg-tagline').value,
+        denomination: document.getElementById('cfg-denom').value,
+        address: document.getElementById('cfg-address').value,
+        addressLine2: document.getElementById('cfg-address2').value,
+        phone: document.getElementById('cfg-phone').value,
+        email: document.getElementById('cfg-email').value,
+        website: configData.website || '',
+        services: configData.services || [],
+        social: {
+            facebook: document.getElementById('cfg-fb').value,
+            instagram: document.getElementById('cfg-ig').value,
+            youtube: document.getElementById('cfg-yt').value
+        },
+        giving: {
+            url: document.getElementById('cfg-give').value,
+            label: 'Give Online'
+        },
+        maps: configData.maps || {},
+        github: {
+            owner: document.getElementById('cfg-gh-owner').value,
+            repo: document.getElementById('cfg-gh-repo').value,
+            branch: GH_BRANCH
+        },
+        meta: configData.meta || {}
+    };
+}
 // ===== PUBLISH ALL =====
 async function publishAll() {
     const token = document.getElementById('gh-token').value || localStorage.getItem('faithag_gh_token') || '';
@@ -586,7 +716,8 @@ async function publishAll() {
     const files = [
         { path: 'events.json', content: JSON.stringify(events, null, 2), label: 'events' },
         { path: 'announcements.json', content: JSON.stringify({ active: document.getElementById('banner-active').checked, text: document.getElementById('banner-text').value }, null, 2), label: 'announcement' },
-        { path: 'sermons.json', content: JSON.stringify(getSermonData(), null, 2), label: 'sermons' }
+        { path: 'sermons.json', content: JSON.stringify(getSermonData(), null, 2), label: 'sermons' },
+        { path: 'config.json', content: JSON.stringify(getConfigData(), null, 2), label: 'config' }
     ];
 
     let successCount = 0;
@@ -643,6 +774,7 @@ function initAdmin() {
     loadEvents();
     loadAnnouncement();
     loadSermons();
+    loadConfigData();
 }
 </script>
 </body>
