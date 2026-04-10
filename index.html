@@ -948,9 +948,9 @@
                     <div style="margin-top:32px;">
                         <h4 style="font-weight:600;margin-bottom:14px;font-size:0.9rem;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-light);">Follow Us</h4>
                         <div style="display:flex;gap:12px;">
-                            <a href="https://facebook.com" target="_blank" style="width:42px;height:42px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;transition:var(--transition);" onmouseover="this.style.background='#1877F2'" onmouseout="this.style.background='var(--navy)'"><i class="fa-brands fa-facebook-f"></i></a>
-                            <a href="https://instagram.com" target="_blank" style="width:42px;height:42px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;transition:var(--transition);" onmouseover="this.style.background='#E1306C'" onmouseout="this.style.background='var(--navy)'"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="https://youtube.com" target="_blank" style="width:42px;height:42px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;transition:var(--transition);" onmouseover="this.style.background='#FF0000'" onmouseout="this.style.background='var(--navy)'"><i class="fa-brands fa-youtube"></i></a>
+                            <a id="cfg-contact-fb" href="https://facebook.com" target="_blank" style="width:42px;height:42px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;transition:var(--transition);" onmouseover="this.style.background='#1877F2'" onmouseout="this.style.background='var(--navy)'"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a id="cfg-contact-ig" href="https://instagram.com" target="_blank" style="width:42px;height:42px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;transition:var(--transition);" onmouseover="this.style.background='#E1306C'" onmouseout="this.style.background='var(--navy)'"><i class="fa-brands fa-instagram"></i></a>
+                            <a id="cfg-contact-yt" href="https://youtube.com" target="_blank" style="width:42px;height:42px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;transition:var(--transition);" onmouseover="this.style.background='#FF0000'" onmouseout="this.style.background='var(--navy)'"><i class="fa-brands fa-youtube"></i></a>
                         </div>
                     </div>
                 </div>
@@ -1242,7 +1242,7 @@
                 if (s.series) document.getElementById('sermon-series').textContent = s.series;
                 if (s.title) document.getElementById('sermon-title').textContent = s.title;
                 if (s.speaker) document.getElementById('sermon-speaker').textContent = s.speaker;
-                if (s.date) document.getElementById('sermon-date').textContent = new Date(s.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                if (s.date && s.date.trim()) document.getElementById('sermon-date').textContent = new Date(s.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
                 if (s.description) document.getElementById('sermon-desc').textContent = s.description;
             })
             .catch(() => {});
